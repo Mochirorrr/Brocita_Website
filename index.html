@@ -52,6 +52,7 @@
         ul { list-style: none; }
         img { max-width: 100%; display: block; }
         button { font-family: 'Poppins', sans-serif; }
+        .hidden { display: none !important; }
 
         /* --- UTILITIES --- */
         .container {
@@ -97,6 +98,12 @@
         }
         
         .btn-block { width: 100%; }
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+        .btn-danger:hover { background-color: #c0392b; }
 
         /* --- HEADER & NAVIGATION --- */
         header {
@@ -135,6 +142,7 @@
             white-space: nowrap;
             z-index: 1001;
             height: 100%; 
+            cursor: default; /* Supaya tidak terlihat seperti link biasa */
         }
 
         .nav-links {
@@ -412,6 +420,8 @@
         }
         .social-icons a:hover { background: var(--primary-color); transform: translateY(-5px); }
         .copyright { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; color: #aaa; font-size: 0.85rem; }
+        .secret-trigger { cursor: default; transition: color 0.3s; }
+        .secret-trigger:hover { color: var(--primary-color); }
 
         /* --- CART MODAL (SIDEBAR) --- */
         .cart-overlay {
@@ -614,6 +624,14 @@
         .alert-message { font-size: 0.95rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.5; }
         .alert-btn { background-color: var(--primary-color); color: var(--white); border: none; padding: 10px 30px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; }
         .alert-btn:hover { background-color: var(--accent-color); }
+
+        /* --- ADMIN DASHBOARD STYLES (NEW) --- */
+        .table-responsive { overflow-x: auto; background: white; border-radius: 12px; box-shadow: var(--shadow-sm); padding: 20px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #f8f9fa; font-weight: 600; color: var(--text-dark); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #fff8e1; }
     </style>
 </head>
 <body>
@@ -621,7 +639,8 @@
     <!-- Header -->
     <header>
         <nav>
-            <div class="logo">
+            <!-- SECRET DOOR TRIGGER: Klik 5x Cepat disini -->
+            <div class="logo" id="secretDoor">
                 <i class="fas fa-utensils"></i> Brocita
             </div>
             <ul class="nav-links" id="navLinks">
@@ -642,110 +661,165 @@
         </nav>
     </header>
 
-    <!-- Hero -->
-    <section class="hero section-padding" id="home">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="container">
-            <div class="hero-content">
-                <h1>Kerenyahan Tahu <br><span>Brocita</span> Tiada Tara!</h1>
-                <p>Tahu premium dengan tekstur lembut di dalam dan renyah di luar. Tanpa pengawet, hanya rasa cinta.</p>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: inherit;">
-                    <a href="#products" class="btn btn-primary">Pesan Sekarang</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="Logo.png" alt="Tahu Goreng Brocita" onerror="this.src='https://picsum.photos/seed/tofu1/600/600'">
-            </div>
-        </div>
-    </section>
-
-    <!-- Products -->
-    <section class="section-padding" id="products" style="background: var(--white);">
-        <div class="container">
-            <div class="section-title" data-aos="fade-up">
-                <h2>Menu <span>Populer</span></h2>
-                <p style="margin-top:10px; color:var(--text-light)">Klik tombol plus (+) untuk memasukkan produk kedalam keranjang.</p>
-            </div>
-            <div class="product-grid" id="productGrid">
-                <!-- Produk di-render JS -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="section-padding testimonials" id="testi">
-        <div class="container">
-            <div class="section-title" data-aos="fade-up">
-                <h2>Kata <span>Pelanggan</span></h2>
-            </div>
-            <div class="testimonial-grid">
-                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="0">
-                    <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+    <!-- === VIEW PELANGGAN (ORIGINAL STRUCTURE) === -->
+    <main id="customerView">
+        <!-- Hero -->
+        <section class="hero section-padding" id="home">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Kerenyahan Tahu <br><span>Brocita</span> Tiada Tara!</h1>
+                    <p>Tahu premium dengan tekstur lembut di dalam dan renyah di luar. Tanpa pengawet, hanya rasa cinta.</p>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: inherit;">
+                        <a href="#products" class="btn btn-primary">Pesan Sekarang</a>
                     </div>
-                    <p class="quote">"Bagi saya brocita memiliki banyak beragam makanan dan harganya juga terjangkau"</p>
-                    <small style="font-weight:600; color:var(--primary-color)">- Fritzie, Siswa</small>
                 </div>
-                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="100">
-                    <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="quote">"brocita(brownies cireng tahu) menurut aku makanan yang ada di brocita ini enak² semua, terus harganya juga tidak terlalu mahal cuman 10rb habis itu bubuk cabe di tahunya juga enak tidak pedas² banget lebih ke manis pedesnya cuman sedikit. itu aja sii hehee 😁"</p>
-                    <small style="font-weight:600; color:var(--primary-color)">- Marcello, Siswa</small>
-                </div>
-                <div class="testimonial-card" data-aos="flip-left" data-aos-delay="200">
-                    <div class="stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <p class="quote">"Bagi saya sudah cukup enak dan harga terjangkau, tapi bumbu sekarang lumayan sedikit"</p>
-                    <small style="font-weight:600; color:var(--primary-color)">- Kemas, Siswa</small>
+                <div class="hero-image">
+                    <img src="Logo.png" alt="Tahu Goreng Brocita" onerror="this.src='https://picsum.photos/seed/tofu1/600/600'">
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact/Info -->
-    <section class="section-padding" id="contact">
-        <div class="container text-center">
-            <div class="section-title" data-aos="fade-up">
-                <h2>Lokasi & <span>Kontak</span></h2>
-            </div>
-            <p style="margin-bottom: 30px; font-size:1.1rem;">Khusus Di Lingkungan Ignatius Global School Palembang.</p>
-            <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;" data-aos="fade-up" data-aos-delay="100">
-                <div style="background:white; padding:15px 30px; border-radius:50px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:10px;">
-                    <i class="fas fa-map-marker-alt" style="color:var(--primary-color); font-size:1.2rem;"></i> 
-                    <span style="font-weight:600;">Ignatius Global School</span>
+        <!-- Products -->
+        <section class="section-padding" id="products" style="background: var(--white);">
+            <div class="container">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Menu <span>Populer</span></h2>
+                    <p style="margin-top:10px; color:var(--text-light)">Klik tombol plus (+) untuk memasukkan produk kedalam keranjang.</p>
                 </div>
-                <div style="background:white; padding:15px 30px; border-radius:50px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:10px;">
-                    <i class="fas fa-phone" style="color:var(--primary-color); font-size:1.2rem;"></i> 
-                    <span style="font-weight:600;">+62 838-9591-2388</span>
+                <div class="product-grid" id="productGrid">
+                    <!-- Produk di-render JS -->
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div data-aos="fade-right">
-                    <h3 style="color:var(--primary-color); margin-bottom:15px; font-family:'Fredoka'; font-size:1.5rem;">Brocita</h3>
-                    <p style="color:#ccc; font-size:0.9rem; line-height:1.8;">Menyajikan olahan tahu terbaik dengan bahan berkualitas dan cinta khas masakan rumahan. Renyah di luar, lembut di dalam.</p>
+        <!-- Testimonials -->
+        <section class="section-padding testimonials" id="testi">
+            <div class="container">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Kata <span>Pelanggan</span></h2>
                 </div>
-                <div data-aos="fade-left">
-                    <h4 style="color:white; margin-bottom:20px; font-size:1.2rem;">Ikuti Kami</h4>
-                    <div class="social-icons">
-                        <a href="https://www.instagram.com/brocita_enak_banget" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="https://chat.whatsapp.com/K3BizPv96cYCfaY9sTKifZ" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card" data-aos="flip-left" data-aos-delay="0">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="quote">"Bagi saya brocita memiliki banyak beragam makanan dan harganya juga terjangkau"</p>
+                        <small style="font-weight:600; color:var(--primary-color)">- Fritzie, Siswa</small>
+                    </div>
+                    <div class="testimonial-card" data-aos="flip-left" data-aos-delay="100">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="quote">"brocita(brownies cireng tahu) menurut aku makanan yang ada di brocita ini enak² semua, terus harganya juga tidak terlalu mahal cuman 10rb habis itu bubuk cabe di tahunya juga enak tidak pedas² banget lebih ke manis pedesnya cuman sedikit. itu aja sii hehee 😁"</p>
+                        <small style="font-weight:600; color:var(--primary-color)">- Marcello, Siswa</small>
+                    </div>
+                    <div class="testimonial-card" data-aos="flip-left" data-aos-delay="200">
+                        <div class="stars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="quote">"Bagi saya sudah cukup enak dan harga terjangkau, tapi bumbu sekarang lumayan sedikit"</p>
+                        <small style="font-weight:600; color:var(--primary-color)">- Kemas, Siswa</small>
                     </div>
                 </div>
             </div>
-            <div class="copyright">
-                &copy; 2023 Brocita Tahu Premium. All rights reserved.
+        </section>
+
+        <!-- Contact/Info -->
+        <section class="section-padding" id="contact">
+            <div class="container text-center">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Lokasi & <span>Kontak</span></h2>
+                </div>
+                <p style="margin-bottom: 30px; font-size:1.1rem;">Khusus Di Lingkungan Ignatius Global School Palembang.</p>
+                <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;" data-aos="fade-up" data-aos-delay="100">
+                    <div style="background:white; padding:15px 30px; border-radius:50px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:10px;">
+                        <i class="fas fa-map-marker-alt" style="color:var(--primary-color); font-size:1.2rem;"></i> 
+                        <span style="font-weight:600;">Ignatius Global School</span>
+                    </div>
+                    <div style="background:white; padding:15px 30px; border-radius:50px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:10px;">
+                        <i class="fas fa-phone" style="color:var(--primary-color); font-size:1.2rem;"></i> 
+                        <span style="font-weight:600;">+62 838-9591-2388</span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </footer>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-grid">
+                    <div data-aos="fade-right">
+                        <h3 style="color:var(--primary-color); margin-bottom:15px; font-family:'Fredoka'; font-size:1.5rem;">Brocita</h3>
+                        <p style="color:#ccc; font-size:0.9rem; line-height:1.8;">Menyajikan olahan tahu terbaik dengan bahan berkualitas dan cinta khas masakan rumahan. Renyah di luar, lembut di dalam.</p>
+                    </div>
+                    <div data-aos="fade-left">
+                        <h4 style="color:white; margin-bottom:20px; font-size:1.2rem;">Ikuti Kami</h4>
+                        <div class="social-icons">
+                            <a href="https://www.instagram.com/brocita_enak_banget" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a href="https://chat.whatsapp.com/K3BizPv96cYCfaY9sTKifZ" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <!-- SECRET DOOR TRIGGER (ALTERNATIVE) -->
+                    <span class="secret-trigger" id="secretDoorFooter">&copy; 2023 Brocita Tahu Premium. All rights reserved.</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- === VIEW ADMIN / DATA (NEW) === -->
+    <main id="adminView" class="hidden">
+        <section class="section-padding" id="dataDashboard" style="min-height: 100vh; background: #f4f6f8;">
+            <div class="container">
+                <div class="section-title" style="margin-top: 50px;">
+                    <h2><i class="fas fa-file-csv"></i> Data Pesanan</h2>
+                    <p>Semua data yang dipesan tersimpan di browser dan bisa diunduh ke CSV.</p>
+                </div>
+
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div style="background: white; padding: 15px 25px; border-radius: 50px; box-shadow: var(--shadow-sm);">
+                        <strong>Total Pesanan: <span id="totalOrdersCount">0</span></strong>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="downloadCSV()" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Download CSV
+                        </button>
+                        <button onclick="clearAllData()" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Reset Data
+                        </button>
+                        <button onclick="switchView('customer')" class="btn" style="background: #95a5a6; color: white;">
+                            <i class="fas fa-arrow-left"></i> Kembali ke Menu
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>Nama</th>
+                                <th>Kelas</th>
+                                <th>Detail Pesanan</th>
+                                <th>Total Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Data akan di-render di sini via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="emptyState" style="text-align:center; padding: 50px; color: #999; display: none;">
+                    <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                    <p>Belum ada data pesanan masuk.</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Cart Sidebar -->
     <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
@@ -820,12 +894,7 @@
         });
 
         // --- KONFIGURASI ---
-        // Gunakan Nomor Personal Admin agar fitur auto-fill teks bisa berjalan
-        // Format: 628... (tanpa + atau 0 di depan)
         const adminPhoneNumber = "6283895912388"; 
-
-        // Link Grup (opsional, untuk footer saja jika perlu)
-        // const groupInviteLink = "https://chat.whatsapp.com/XXX"; 
 
         // --- DATA PRODUK ---
         const products = [
@@ -957,7 +1026,7 @@
             document.getElementById("customAlert").classList.remove("show");
         }
 
-        // --- FUNGSI CHECKOUT (SMART MODE) ---
+        // --- FUNGSI CHECKOUT (MODIFIED) ---
         function checkoutWhatsApp() {
             if (cart.length === 0) {
                 showCustomAlert("Ups!", "Keranjang kamu masih kosong, silakan pilih menu favoritmu dulu ya!");
@@ -979,17 +1048,30 @@
             message += `*DETAIL PESANAN:*%0A`;
             
             let grandTotal = 0;
+            let orderSummary = [];
 
             cart.forEach(item => {
                 const subtotal = item.price * item.qty;
                 grandTotal += subtotal;
                 message += `- ${item.name} (${item.qty}x) : Rp ${subtotal.toLocaleString('id-ID')}%0A`;
+                orderSummary.push(`${item.name} (${item.qty}x)`);
             });
 
             message += `%0A *TOTAL BAYAR: Rp ${grandTotal.toLocaleString('id-ID')}*%0A`;
             message += `%0AMohon diproses ya! Terima kasih.`;
 
-            // 1. Salin pesan ke clipboard (untuk cadangan kalau mau kirim ke grup)
+            // SIMPAN DATA KE LOCALSTORAGE (BARU)
+            const newOrder = {
+                id: Date.now(),
+                date: new Date().toLocaleString('id-ID'),
+                name: name,
+                class: userClass,
+                items: orderSummary.join(', '),
+                total: grandTotal
+            };
+            saveOrderToStorage(newOrder);
+
+            // 1. Salin pesan ke clipboard
             const tempInput = document.createElement("input");
             tempInput.value = message.replace(/%0A/g, '\n').replace(/%20/g, ' ');
             document.body.appendChild(tempInput);
@@ -997,18 +1079,144 @@
             document.execCommand("copy");
             document.body.removeChild(tempInput);
 
-            // 2. Buka WhatsApp Personal Admin dengan Auto-fill Text
-            // Ini satu-satunya cara agar pesan langsung terisi
+            // 2. Buka WhatsApp
             const url = `https://wa.me/${adminPhoneNumber}?text=${message}`;
             
-            // 3. Beri Info ke User
-            showCustomAlert("Siap Pesan!", "Pesan sudah otomatis terisi! Kamu akan diarahkan ke WhatsApp Admin untuk mengirim pesanan.");
+            // 3. Beri Info
+            showCustomAlert("Siap Pesan!", "Pesan sudah otomatis terisi! Kamu akan diarahkan ke WhatsApp Admin.");
 
-            // 4. Delay sebentar lalu buka WhatsApp
+            // 4. Delay & Open
             setTimeout(() => {
                 window.open(url, '_blank');
+                cart = [];
+                updateCartUI();
+                toggleCart();
             }, 2000);
         }
+
+        // --- DATA STORAGE & ADMIN FUNCTIONS (BARU) ---
+        function saveOrderToStorage(order) {
+            let orders = JSON.parse(localStorage.getItem('brocita_orders') || "[]");
+            orders.push(order);
+            localStorage.setItem('brocita_orders', JSON.stringify(orders));
+        }
+
+        function loadAdminData() {
+            const orders = JSON.parse(localStorage.getItem('brocita_orders') || "[]");
+            const tbody = document.getElementById('ordersTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const table = document.getElementById('ordersTable');
+            const countEl = document.getElementById('totalOrdersCount');
+
+            countEl.innerText = orders.length;
+            tbody.innerHTML = '';
+
+            if (orders.length === 0) {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+
+            // Urutkan dari yang terbaru
+            orders.reverse().forEach(order => {
+                const row = `
+                    <tr>
+                        <td>${order.date}</td>
+                        <td><strong>${order.name}</strong></td>
+                        <td>${order.class}</td>
+                        <td>${order.items}</td>
+                        <td>Rp ${order.total.toLocaleString('id-ID')}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function downloadCSV() {
+            const orders = JSON.parse(localStorage.getItem('brocita_orders') || "[]");
+            if (orders.length === 0) return showCustomAlert("Data Kosong", "Belum ada data untuk didownload.");
+
+            // Header CSV
+            let csvContent = "data:text/csv;charset=utf-8,ID,Tanggal,Nama,Kelas,Items,Total\n";
+
+            // Rows
+            orders.forEach(order => {
+                const row = `${order.id},"${order.date}","${order.name}","${order.class}","${order.items}",${order.total}`;
+                csvContent += row + "\n";
+            });
+
+            // Download Trigger
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Data_Brocita_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearAllData() {
+            if(confirm("Yakin ingin menghapus semua data pesanan? Data yang dihapus tidak bisa dikembalikan.")) {
+                localStorage.removeItem('brocita_orders');
+                loadAdminData();
+                showToast("Semua data berhasil dihapus.");
+            }
+        }
+
+        function switchView(viewName) {
+            const custView = document.getElementById('customerView');
+            const adminView = document.getElementById('adminView');
+            const cartBtn = document.querySelector('.cart-icon');
+            
+            window.scrollTo(0, 0);
+
+            if(viewName === 'admin') {
+                custView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                cartBtn.style.display = 'none'; // Sembunyikan cart saat admin
+                loadAdminData();
+            } else {
+                custView.classList.remove('hidden');
+                adminView.classList.add('hidden');
+                cartBtn.style.display = 'flex';
+            }
+        }
+
+        // --- SECRET DOOR LOGIC (BARU) ---
+        let clickCount = 0;
+        let clickTimer = null;
+
+        function setupSecretDoor(elementId) {
+            const el = document.getElementById(elementId);
+            if(!el) return;
+
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                clickCount++;
+                
+                if (clickTimer) clearTimeout(clickTimer);
+                
+                // Reset counter jika stop klik > 500ms
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 500);
+
+                // Jika 5 kali klik
+                if (clickCount >= 5) {
+                    switchView('admin');
+                    clickCount = 0; 
+                    showToast("🔓 Mode Admin Terbuka!");
+                }
+            });
+        }
+
+        // Inisialisasi Pintu Rahasia (Logo & Footer)
+        setupSecretDoor('secretDoor');
+        setupSecretDoor('secretDoorFooter');
+
 
         // --- ACTIVE LINK HIGHLIGHTING ON SCROLL ---
         const sections = document.querySelectorAll("section");
