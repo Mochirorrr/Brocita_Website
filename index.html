@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Brocita - Tahu Premium</title>
+    <title>Brocita - Tahu Premium (Live Stock)</title>
     <meta name="description" content="Brocita menjual berbagai olahan tahu premium yang lezat, renyah, dan higienis.">
     
     <!-- Google Fonts -->
@@ -63,7 +63,7 @@
         .section-padding { padding: 80px 0; }
         .text-center { text-align: center; }
         
-        /* Tombol dengan Efek Ripple Hover */
+        /* Tombol */
         .btn {
             display: inline-flex; 
             align-items: center; 
@@ -104,13 +104,19 @@
             box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
         }
         .btn-danger:hover { background-color: #c0392b; }
-
         .btn-secondary {
             background-color: #95a5a6;
             color: white;
             box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
         }
         .btn-secondary:hover { background-color: #7f8c8d; }
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none !important;
+            animation: none !important;
+            box-shadow: none;
+        }
 
         /* --- HEADER & NAVIGATION --- */
         header {
@@ -277,7 +283,6 @@
         .section-title h2 { font-size: 2.5rem; margin-bottom: 15px; }
         .section-title span { color: var(--primary-color); font-weight: 600; position: relative; display: inline-block; }
         
-        /* PERBAIKAN CSS GRID BUG: PENUTUP KURUNG KERAWAL { BUKAN ) */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
 
         .product-card {
@@ -302,6 +307,9 @@
         
         .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
         .price { font-size: 1.1rem; font-weight: 700; color: var(--primary-color); }
+        .stock-tag { font-size: 0.75rem; color: #999; display: block; margin-top: 2px; }
+        .stock-tag.low-stock { color: #e67e22; font-weight: bold; }
+        .stock-tag.out-of-stock { color: #c0392b; font-weight: bold; }
 
         .btn-add {
             background-color: var(--text-dark);
@@ -311,15 +319,30 @@
             border-radius: 50%;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        .btn-add:hover { background-color: var(--primary-color); transform: rotate(90deg); }
+        
+        @keyframes btnPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.85); }
+            100% { transform: scale(1); }
+        }
+        .btn-add.clicked { animation: btnPop 0.2s ease; }
+
+        .btn-add:hover:not(:disabled) { background-color: var(--primary-color); transform: rotate(90deg); }
+        .btn-add:active:not(:disabled) { transform: scale(0.9); }
+        
+        .btn-add:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
         /* --- TESTIMONIALS --- */
         .testimonials { background: linear-gradient(135deg, #fff9c4 0%, #ffe082 100%); position: relative; }
         
-        /* PERBAIKAN CSS GRID BUG: PENUTUP KURUNG KERAWAL { BUKAN ) */
         .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         
         .testimonial-card {
@@ -334,7 +357,6 @@
 
         /* --- FOOTER --- */
         footer { background-color: var(--text-dark); color: var(--white); padding: 60px 0 20px; font-size: 0.95rem; }
-        /* PERBAIKAN CSS GRID BUG: PENUTUP KURUNG KERAWAL { BUKAN ) */
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
         
         .social-icons a {
@@ -364,7 +386,7 @@
         .close-cart { cursor: pointer; font-size: 1.5rem; color: var(--text-light); transition: color 0.3s; }
         .close-cart:hover { color: var(--accent-color); }
 
-        .cart-items { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
+        .cart-items { flex-grow: 1; overflow-y: auto; padding-right: 5px; margin-bottom: 20px; }
         .cart-item { display: flex; justify-content: space-between; margin-bottom: 20px; background: #fafafa; padding: 15px; border-radius: 12px; border: 1px solid #eee; }
         .item-info h4 { font-size: 1rem; margin-bottom: 5px; }
         .item-info p { font-size: 0.9rem; color: var(--text-light); }
@@ -377,8 +399,10 @@
         .form-group label { display: block; font-size: 0.9rem; margin-bottom: 8px; font-weight: 600; color: var(--text-dark); }
         .form-group input, .form-group textarea {
             width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-family: inherit; transition: border 0.3s;
+            background-color: #fcfcfc;
         }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-color); }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-color); background-color: #fff; }
+        .form-group textarea { resize: vertical; min-height: 60px; }
 
         /* --- MOBILE --- */
         @media (max-width: 768px) {
@@ -400,7 +424,7 @@
         }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- TOAST --- */
+        /* --- TOAST & ALERT --- */
         .toast {
             visibility: hidden; min-width: 300px; background-color: var(--white); color: var(--text-dark);
             text-align: left; border-radius: 12px; padding: 16px 20px; position: fixed; z-index: 3000;
@@ -419,7 +443,6 @@
         .toast-message { font-size: 0.85rem; color: var(--text-light); }
         .toast-close { cursor: pointer; color: #aaa; font-size: 1rem; }
 
-        /* --- ALERT --- */
         .custom-alert-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
             backdrop-filter: blur(3px); z-index: 4000; opacity: 0; visibility: hidden; transition: all 0.3s;
@@ -476,6 +499,14 @@
             border-left-color: var(--primary-color); animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Connection Status Indicator */
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%; background-color: #ccc;
+            display: inline-block; margin-left: 5px;
+        }
+        .status-dot.online { background-color: #27ae60; box-shadow: 0 0 5px #27ae60; }
+        .status-dot.offline { background-color: #c0392b; }
     </style>
 </head>
 <body>
@@ -483,9 +514,8 @@
     <!-- Header -->
     <header>
         <nav>
-            <!-- SECRET DOOR: Klik 5x pada Logo -->
             <div class="logo" id="secretDoor">
-                <i class="fas fa-utensils"></i> Brocita
+                <i class="fas fa-utensils"></i> Brocita <span id="connStatus" class="status-dot"></span>
             </div>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" class="nav-link">Beranda</a></li>
@@ -530,10 +560,19 @@
             <div class="container">
                 <div class="section-title" data-aos="fade-up">
                     <h2>Menu <span>Populer</span></h2>
-                    <p style="margin-top:10px; color:var(--text-light)">Klik tombol plus (+) untuk memasukkan produk kedalam keranjang.</p>
+                    <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-top:10px;">
+                        <p style="color:var(--text-light)">Stok Real-time (Online).</p>
+                        <button onclick="fetchCloudStock(true)" style="background:none; border:none; color:var(--primary-color); cursor:pointer; font-size:1.2rem;" title="Refresh Stok">
+                            <i class="fas fa-sync-alt" id="refreshIcon"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="product-grid" id="productGrid">
                     <!-- JS will render products here -->
+                    <div style="grid-column: 1/-1; text-align:center; padding: 50px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size:2rem; color:var(--primary-color);"></i>
+                        <p style="margin-top:10px;">Mengambil data stok terbaru...</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -570,7 +609,6 @@
                 <div class="section-title" data-aos="fade-up">
                     <h2>Lokasi & <span>Kontak</span></h2>
                 </div>
-                <!-- PERBAIKAN TYPO: Lingkungan -->
                 <p style="margin-bottom: 30px; font-size:1.1rem;">Khusus Di Lingkungan Ignatius Global School Palembang.</p>
                 <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;" data-aos="fade-up">
                     <div style="background:white; padding:15px 30px; border-radius:50px; box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:10px;">
@@ -642,8 +680,9 @@
                     <button onclick="downloadCSV()" class="btn" style="background:#27ae60; color:white; box-shadow:0 4px 15px rgba(39,174,96,0.3);">
                         <i class="fas fa-file-csv"></i> Download CSV
                     </button>
-                    <button onclick="clearAllData()" class="btn btn-danger">
-                        <i class="fas fa-trash"></i> Hapus Semua (Clear DB)
+                    <!-- Tombol Reset Pesanan (Diperbaiki) -->
+                    <button onclick="resetOrdersData()" class="btn" style="background:#e74c3c; color:white; box-shadow:0 4px 15px rgba(231,76,60,0.3);">
+                        <i class="fas fa-trash-alt"></i> Reset Pesanan (0)
                     </button>
                 </div>
 
@@ -655,6 +694,7 @@
                                 <th>Waktu</th>
                                 <th>Nama</th>
                                 <th>Kelas</th>
+                                <th>Catatan</th>
                                 <th>Detail Pesanan</th>
                                 <th>Total</th>
                             </tr>
@@ -685,11 +725,24 @@
         </div>
         <div class="cart-footer">
             <div class="total-price"><span>Total:</span><span id="cartTotal">Rp 0</span></div>
-            <div class="form-group"><label for="customerName">Nama Pemesan</label><input type="text" id="customerName" placeholder="Nama Kamu"></div>
-            <div class="form-group"><label for="customerClass">Kelas</label><input type="text" id="customerClass" placeholder="Tulis kelas"></div>
-            <button class="btn btn-primary btn-block" onclick="checkoutWhatsApp()">
+            <div class="form-group">
+                <label for="customerName">Nama Pemesan <span style="color:red">*</span></label>
+                <input type="text" id="customerName" placeholder="Nama Kamu">
+            </div>
+            <div class="form-group">
+                <label for="customerClass">Kelas <span style="color:red">*</span></label>
+                <input type="text" id="customerClass" placeholder="Tulis kelas">
+            </div>
+            <div class="form-group">
+                <label for="customerNote">Catatan Tambahan <small style="color:#999; font-weight:normal;">(Opsional)</small></label>
+                <textarea id="customerNote" placeholder="Contoh: Req extra bumbu, dsb..."></textarea>
+            </div>
+            <button id="btnCheckout" class="btn btn-primary btn-block" onclick="processCheckout()">
                 <i class="fab fa-whatsapp"></i> PESAN VIA WA
             </button>
+            <div id="offlineMsg" style="display:none; text-align:center; color:#e74c3c; font-size:0.8rem; margin-top:5px;">
+                <i class="fas fa-wifi"></i> Mode Offline (Tidak bisa pesan)
+            </div>
         </div>
     </div>
 
@@ -727,7 +780,7 @@
 
     <div id="loadingSpinner" class="loading-overlay hidden">
         <div class="spinner"></div>
-        <p style="margin-top:10px; font-weight:600; color:#555;">Menghubungkan ke Private Database...</p>
+        <p style="margin-top:10px; font-weight:600; color:#555;">Memproses Data...</p>
     </div>
 
     <!-- Scripts -->
@@ -735,53 +788,345 @@
     <script>
         AOS.init({ once: true, offset: 100, duration: 800 });
 
-        // --- KONFIGURASI DATABASE (PRIVATE MODE) ---
+        // ==========================================
+        // ⚠️ KONFIGURASI PENTING (SUDAH DIISI)
+        // ==========================================
         const DB_CONFIG = {
-            // GANTI DENGAN BIN ID KAMU
+            // Bin ID dari database Brocita Anda
             binId: "696485e443b1c97be92a5519", 
-            // ISI DENGAN SECRET KEY (X-Master-Key) dari JSONBin
-            // Pastikan JSONBin di-setting mode Private (Read/Write Only)
-            masterKey: "$2a$10$s1e3iC/CAzkW0DX/79oqzOfMMm/CBdfI.kAtjoQXkeFFsm6n/H0Ui", 
-            // Password UI sederhana untuk membuka dashboard admin di sisi klien
+            
+            // Master Key dari database Brocita Anda
+            masterKey: "$2a$10$eJTbvu.o.6SMCubYyK32A.jGZDi7Y/0ffV0V/7psvauWrwD689iJy", 
+            
+            // Password Admin UI
             uiPassword: "89898989" 
         };
-        
+
         const ADMIN_WA = "6283895912388";
 
-        // --- DATA PRODUK ---
+        // ==========================================
+        // SISTEM PRODUK
+        // ==========================================
+        const DAILY_LIMIT = 10; // Stok awal reset otomatis
+
         const products = [
-            { id: 1, name: "Tahu Ayam", price: 10000, img: "Tahu.jpeg", desc: "Tahu goreng isi ayam Brocita dibuat dari tahu pilihan dengan isian ayam yang lembut, gurih, dan berbumbu pas. Bagian luarnya crispy, dalamnya juicy—sekali coba dijamin nagih" },
-            { id: 2, name: "Tahu Bakso", price: 10000, img: "Tahu.jpeg", desc: "Tahu Bakso Brocita hadir dengan tahu lembut berisi bakso padat, gurih, dan penuh rasa. Digoreng sampai kecokelatan sempurna, luarnya kriuk, dalamnya kenyal dan juicy—cocok buat camilan kapan aja, sekali coba auto repeat" },
-            { id: 3, name: "Tahu Mix", price: 10000, img: "Tahu.jpeg", desc: "Tahu Mix Brocita berisi aneka isian pilihan yang gurih dan lezat, digoreng hingga crispy di luar dan lembut di dalam. Satu porsi, banyak rasa—bikin susah berhenti" },
-            { id: 4, name: "Ayam Geprek", price: 20000, img: "Geprek.jpeg", desc: "Nasi ayam geprek Brocita disajikan dengan ayam goreng crispy yang digeprek sambal pedas khas, berpadu dengan nasi hangat pulen. Rasanya gurih, pedasnya nampol, bikin makan makin puas dan nagih" },
-            { id: 5, name: "Chicken Steak", price: 20000, img: "Steak.jpeg", desc: "Nasi chicken steak Brocita disajikan dengan ayam steak lembut dan juicy, dilumuri saus spesial yang gurih dan creamy. Dipadukan dengan nasi hangat pulen, bikin setiap suapan terasa puas dan nagih" },
+            { id: 1, name: "Tahu Ayam", price: 10000, img: "Tahu.jpeg", desc: "Tahu goreng isi ayam Brocita dibuat dari tahu pilihan dengan isian ayam yang lembut, gurih, dan berbumbu pas." },
+            { id: 2, name: "Tahu Bakso", price: 10000, img: "Tahu.jpeg", desc: "Tahu Bakso Brocita hadir dengan tahu lembut berisi bakso padat, gurih, dan penuh rasa." },
+            { id: 3, name: "Tahu Mix", price: 10000, img: "Tahu.jpeg", desc: "Tahu Mix Brocita berisi aneka isian pilihan yang gurih dan lezat, digoreng hingga crispy." },
+            { id: 4, name: "Ayam Geprek", price: 20000, img: "Geprek.jpeg", desc: "Nasi ayam geprek Brocita disajikan dengan ayam goreng crispy yang digeprek sambal pedas khas." },
+            { id: 5, name: "Chicken Steak", price: 20000, img: "Steak.jpeg", desc: "Nasi chicken steak Brocita disajikan dengan ayam steak lembut dan juicy, dilumuri saus spesial." },
         ];
 
-        // --- RENDER PRODUK ---
-        const productGrid = document.getElementById('productGrid');
-        products.forEach((p, i) => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.setAttribute('data-aos', 'fade-up');
-            card.setAttribute('data-aos-delay', i * 50);
-            card.innerHTML = `
-                <div class="product-image"><img src="${p.img}" alt="${p.name}" onerror="this.src='https://picsum.photos/seed/tofu${p.id}/400/300'"></div>
-                <div class="product-info">
-                    <h3 class="product-title">${p.name}</h3>
-                    <p class="product-desc">${p.desc}</p>
-                    <div class="product-footer">
-                        <span class="price">Rp ${p.price.toLocaleString('id-ID')}</span>
-                        <button class="btn-add" onclick="addToCart(${p.id})"><i class="fas fa-plus"></i></button>
-                    </div>
-                </div>`;
-            productGrid.appendChild(card);
-        });
-
-        // --- CART LOGIC ---
+        // State Aplikasi
         let cart = [];
-        function addToCart(id) {
+        let isOnline = navigator.onLine;
+        
+        // ==========================================
+        // API CLOUD HANDLER (JSONBIN)
+        // ==========================================
+        const getHeaders = () => {
+            return {
+                'Content-Type': 'application/json',
+                'X-Master-Key': DB_CONFIG.masterKey
+            };
+        };
+
+        // Helper: Cek hari ini (YYYY-MM-DD)
+        function getTodayString() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        // 1. Fetch Stok & Data Terbaru dari Cloud (REALTIME ONLY)
+        async function fetchCloudStock(showLoading = false) {
+            if(!DB_CONFIG.binId || DB_CONFIG.binId === "") {
+                showCustomAlert("Error Sistem", "Bin ID belum dikonfigurasi.");
+                return; 
+            }
+
+            if(showLoading) {
+                document.getElementById('refreshIcon').classList.add('fa-spin');
+            }
+
+            try {
+                // Fetch data langsung dari Server (Online Only)
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, {
+                    method: 'GET',
+                    headers: getHeaders()
+                });
+
+                if (!response.ok) throw new Error('Gagal koneksi ke JSONBin Database');
+
+                const data = await response.json();
+                const db = data.record;
+
+                // Update status online ke hijau
+                setOnlineStatus(true);
+
+                // === LOGIKA RESET OTOMATIS HARIAN ===
+                // Jika tanggal di database berbeda dengan tanggal hari ini (User HP)
+                // Maka stok di-reset ke DAILY_LIMIT dan tanggal diperbarui
+                const today = getTodayString();
+                if (db.lastResetDate !== today) {
+                    console.log("Hari berganti! Mereset stok otomatis di Cloud...");
+                    await resetCloudStockInternal();
+                    // Setelah reset di cloud, fetch ulang data yang baru
+                    return fetchCloudStock(showLoading); 
+                }
+
+                // === UPDATE STOK LOKAL ===
+                // Update stok di variabel 'products' berdasarkan data dari cloud
+                if(db.stock) {
+                    products.forEach(p => {
+                        p.currentStock = db.stock[p.id] !== undefined ? db.stock[p.id] : 0;
+                    });
+                }
+
+                // Render ulang tampilan produk
+                renderProducts();
+                
+                // Catat timestamp terakhir fetch (untuk referensi UI)
+                console.log("Stok berhasil disinkronkan dari Cloud.");
+
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                // Jika gagal fetch, langsung matikan sistem agar tidak terjadi kesalahan data
+                setOnlineStatus(false);
+                showCustomAlert("Koneksi Terputus", "Gagal mengambil stok online. Harap periksa koneksi internet Anda.");
+                
+                // Tampilkan pesan error di grid produk
+                const productGrid = document.getElementById('productGrid');
+                productGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; padding: 40px; color: #c0392b;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:3rem; margin-bottom:15px;"></i>
+                        <h3>Offline / Gagal Koneksi</h3>
+                        <p>Aplikasi ini membutuhkan koneksi internet aktif untuk menampilkan stok real-time.</p>
+                        <button onclick="fetchCloudStock(true)" class="btn btn-primary" style="margin-top:20px;">Coba Lagi</button>
+                    </div>`;
+            } finally {
+                if(showLoading) {
+                    document.getElementById('refreshIcon').classList.remove('fa-spin');
+                }
+            }
+        }
+
+        // 2. Simpan Pesanan & Kurangi Stok (Transaksi Atomik)
+        async function processCheckout() {
+            if (cart.length === 0) return showCustomAlert("Ups!", "Keranjang kosong.");
+            const name = document.getElementById('customerName').value;
+            const cls = document.getElementById('customerClass').value;
+            const note = document.getElementById('customerNote').value.trim();
+
+            if (!name || !cls) return showCustomAlert("Lengkapi Data", "Isi Nama & Kelas dulu.");
+
+            if(!isOnline) {
+                return showCustomAlert("Offline Mode", "Maaf, Anda sedang offline. Pesanan tidak dapat diproses demi keakuratan stok.");
+            }
+
+            showLoading(true);
+
+            try {
+                // STEP 1: Ambil Data Terbaru (Locking Simulation)
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
+                if(!res.ok) throw new Error("Gagal mengunci data stok");
+                const currentDB = await res.json();
+
+                // STEP 2: Validasi Stok & Hitung Pengurangan
+                let newStockState = { ...currentDB.record.stock };
+                let itemsList = [];
+                let total = 0;
+
+                for (let item of cart) {
+                    const currentStockInDB = newStockState[item.id] || 0;
+                    if (currentStockInDB < item.qty) {
+                        throw new Error(`Stok ${item.name} tidak cukup. Sisa di server: ${currentStockInDB}`);
+                    }
+                    // Kurangi stok
+                    newStockState[item.id] = currentStockInDB - item.qty;
+                    
+                    // Hitung total
+                    const sub = item.price * item.qty;
+                    total += sub;
+                    itemsList.push(`${item.name} (${item.qty})`);
+                }
+
+                // STEP 3: Siapkan Data Order Baru
+                const newOrder = {
+                    id: Date.now(),
+                    date: new Date().toLocaleString('id-ID'),
+                    name: name,
+                    class: cls,
+                    note: note || "-",
+                    items: itemsList.join(', '),
+                    total: total
+                };
+
+                // STEP 4: Update Database (Stock + Order)
+                currentDB.record.stock = newStockState;
+                if(!currentDB.record.orders) currentDB.record.orders = [];
+                currentDB.record.orders.push(newOrder);
+
+                // Kirim Update ke Cloud
+                const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify(currentDB.record)
+                });
+
+                if(!updateRes.ok) throw new Error("Gagal menyimpan perubahan ke database.");
+
+                // STEP 5: Jika Sukses -> Kirim WA & Update UI Lokal
+                // Update local memory
+                products.forEach(p => {
+                    p.currentStock = newStockState[p.id];
+                });
+
+                // Kirim WA
+                let msg = `Halo Admin Brocita, mau pesan:%0A%0ANama: ${name}%0AKelas: ${cls}%0A%0A*Pesanan:*%0A`;
+                cart.forEach(item => {
+                    msg += `- ${item.name} (${item.qty}x)%0A`;
+                });
+                if(note) msg += `%0A*Catatan:* ${note}`;
+                msg += `%0A%0A*Total: Rp ${total.toLocaleString('id-ID')}*`;
+
+                // Reset Cart & Buka WA
+                cart = [];
+                updateCartUI();
+                toggleCart();
+                renderProducts(); // Update tampilan stok di menu
+                window.open(`https://wa.me/${ADMIN_WA}?text=${msg}`, '_blank');
+                showToast("Pesanan Berhasil! Stok diperbarui.");
+
+            } catch (error) {
+                console.error(error);
+                showCustomAlert("Gagal Pesan", error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // 3. Reset Stok (Untuk Admin - Hanya dipanggil otomatis saat ganti hari)
+        async function resetCloudStockInternal() {
+            const resetStock = {};
+            products.forEach(p => resetStock[p.id] = DAILY_LIMIT);
+
+            const payload = {
+                lastResetDate: getTodayString(),
+                stock: resetStock,
+                orders: [] 
+            };
+
+            await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
+                method: 'PUT',
+                headers: getHeaders(),
+                body: JSON.stringify(payload)
+            });
+        }
+
+        // 4. FUNGSI BARU: Reset Pesanan Menjadi 0 (Manual Button Admin)
+        // Ini yang Anda minta: Mengosongkan orders tapi menjaga stok tetap ada
+        async function resetOrdersData() {
+            if(!confirm("PERINGATAN: Apakah Anda yakin ingin menghapus SEMUA data pesanan menjadi kosong (0)? Data tidak bisa dikembalikan.")) return;
+            
+            showLoading(true);
+            try {
+                // 1. Ambil data terbaru dulu agar stok tidak hilang
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
+                if(!res.ok) throw new Error("Gagal mengambil data saat ini.");
+                
+                const currentDB = await res.json();
+
+                // 2. Persiapkan update HANYA pada bagian 'orders'
+                // Kita TIDAK mengubah 'stock' atau 'lastResetDate'
+                currentDB.record.orders = []; // Kosongkan pesanan
+
+                // 3. Kirim update kembali ke Cloud
+                const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify(currentDB.record)
+                });
+
+                if(!updateRes.ok) throw new Error("Gagal mereset data pesanan.");
+
+                // 4. Update UI Admin
+                await loadAdminData();
+                showToast("Data pesanan berhasil dikosongkan (Reset 0).");
+
+            } catch (e) {
+                console.error(e);
+                showCustomAlert("Error", e.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // ==========================================
+        // FUNGSI UI & RENDER
+        // ==========================================
+        
+        function renderProducts() {
+            const productGrid = document.getElementById('productGrid');
+            productGrid.innerHTML = ''; 
+
+            products.forEach((p, i) => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.setAttribute('data-aos', 'fade-up');
+                card.setAttribute('data-aos-delay', i * 50);
+                
+                const isOutOfStock = p.currentStock <= 0;
+                const isLowStock = p.currentStock > 0 && p.currentStock <= 5;
+                
+                const btnClass = isOutOfStock ? 'btn-add disabled' : 'btn-add';
+                const btnIcon = isOutOfStock ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-plus"></i>';
+                const btnAction = isOutOfStock ? '' : `onclick="addToCart(event, ${p.id})" onmousedown="animateBtn(this)"`;
+                
+                let stockText = `Sisa: ${p.currentStock}`;
+                let stockClass = "stock-tag";
+                
+                if(isOutOfStock) {
+                    stockText = "HABIS";
+                    stockClass += " out-of-stock";
+                } else if (isLowStock) {
+                    stockClass += " low-stock";
+                }
+
+                card.innerHTML = `
+                    <div class="product-image"><img src="${p.img}" alt="${p.name}" onerror="this.src='https://picsum.photos/seed/tofu${p.id}/400/300'"></div>
+                    <div class="product-info">
+                        <h3 class="product-title">${p.name}</h3>
+                        <p class="product-desc">${p.desc}</p>
+                        <div class="product-footer">
+                            <div>
+                                <span class="price">Rp ${p.price.toLocaleString('id-ID')}</span>
+                                <span class="${stockClass}">${stockText}</span>
+                            </div>
+                            <button class="${btnClass}" ${btnAction} id="btn-${p.id}">${btnIcon}</button>
+                        </div>
+                    </div>`;
+                productGrid.appendChild(card);
+            });
+        }
+
+        function animateBtn(btn) {
+            btn.classList.remove('clicked');
+            void btn.offsetWidth; 
+            btn.classList.add('clicked');
+        }
+
+        function addToCart(event, id) {
+            // Validasi stok lokal (sebagai UX cepat), validasi final saat checkout
             const p = products.find(x => x.id === id);
+            if(p.currentStock <= 0) return showCustomAlert("Stok Habis", "Maaf, barang ini sudah habis.");
+
             const exist = cart.find(x => x.id === id);
+            const currentQtyInCart = exist ? exist.qty : 0;
+            
+            if (currentQtyInCart + 1 > p.currentStock) {
+                showCustomAlert("Stok Terbatas", `Maksimal pesan ${p.name} hanya ${p.currentStock}.`);
+                return;
+            }
+
             exist ? exist.qty++ : cart.push({ ...p, qty: 1 });
             updateCartUI();
             showToast(`"${p.name}" masuk keranjang.`);
@@ -811,7 +1156,7 @@
                 html += `
                     <div class="cart-item">
                         <div class="item-info">
-                            <h4>${item.name}</h4>
+                            HP4><h4>${item.name}</h4></h4>
                             <p>${item.qty} x Rp ${item.price.toLocaleString()}</p>
                             <span class="item-remove" onclick="removeFromCart(${item.id})">Hapus</span>
                         </div>
@@ -827,116 +1172,15 @@
             document.getElementById('cartOverlay').classList.toggle('open');
         }
 
-        // --- API HANDLER (PRIVATE MODE BACKEND) ---
-        // Header otentikasi global untuk JSONBin Private Mode
-        const getHeaders = () => {
-            return {
-                'Content-Type': 'application/json',
-                'X-Master-Key': DB_CONFIG.masterKey
-            };
-        };
-
-        async function fetchOrders() {
-            showLoading(true);
-            try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, {
-                    method: 'GET',
-                    headers: getHeaders()
-                });
-                
-                if (!response.ok) {
-                    if(response.status === 401) throw new Error('Unauthorized: Cek Master Key.');
-                    throw new Error('Gagal mengambil data');
-                }
-                const data = await response.json();
-                // FIX: Filter data agar hanya mengambil pesanan yang valid (memiliki properti 'name' dan 'total')
-                let rawData = Array.isArray(data.record) ? data.record : [];
-                let validOrders = rawData.filter(item => item && item.name && item.total);
-                return validOrders;
-            } catch (error) {
-                console.error("Fetch Error:", error);
-                showToast("Error: " + error.message);
-                return [];
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        async function saveOrderToDB(newOrder) {
-            showLoading(true);
-            try {
-                // 1. Ambil data lama (Wajib di Private Mode juga untuk menjaga data yang lain)
-                const currentData = await fetchOrders();
-                
-                // 2. Tambah data baru
-                currentData.push(newOrder);
-
-                // 3. Update ke JSONBin (PUT) dengan Header Key
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
-                    method: 'PUT',
-                    headers: getHeaders(),
-                    body: JSON.stringify(currentData)
-                });
-
-                if (!response.ok) {
-                    if(response.status === 401) throw new Error('Unauthorized: Cek Master Key.');
-                    throw new Error('Gagal menyimpan ke Cloud');
-                }
-                return true;
-            } catch (error) {
-                console.error(error);
-                showToast("Gagal Simpan: " + error.message);
-                return false;
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // --- CHECKOUT ---
-        async function checkoutWhatsApp() {
-            if (cart.length === 0) return showCustomAlert("Ups!", "Keranjang kosong.");
-            const name = document.getElementById('customerName').value;
-            const cls = document.getElementById('customerClass').value;
-            if (!name || !cls) return showCustomAlert("Lengkapi Data", "Isi Nama & Kelas dulu.");
-
-            let msg = `Halo Admin Brocita, mau pesan:%0A%0ANama: ${name}%0AKelas: ${cls}%0A%0A*Pesanan:*%0A`;
-            let total = 0, itemsList = [];
-            
-            cart.forEach(item => {
-                const sub = item.price * item.qty;
-                total += sub;
-                msg += `- ${item.name} (${item.qty}x) : Rp ${sub.toLocaleString()}%0A`;
-                itemsList.push(`${item.name} (${item.qty})`);
-            });
-            msg += `%0A*Total: Rp ${total.toLocaleString('id-ID')}*`;
-
-            // Simpan ke Database Online
-            const orderData = {
-                id: Date.now(),
-                date: new Date().toLocaleString('id-ID'),
-                name: name,
-                class: cls,
-                items: itemsList.join(', '),
-                total: total
-            };
-
-            // Jalankan simpan db (tetap lanjut walau gagal)
-            saveOrderToDB(orderData).then(success => {
-                if(success) showToast("✅ Data tersimpan di Private Cloud!");
-            });
-
-            // Buka WA
-            window.open(`https://wa.me/${ADMIN_WA}?text=${msg}`, '_blank');
-            
-            cart = [];
-            updateCartUI();
-            toggleCart();
-        }
-
-        // --- ADMIN DASHBOARD ---
+        // ==========================================
+        // ADMIN & UTILITIES
+        // ==========================================
         async function loadAdminData() {
-            // FIX: Menggunakan data yang sudah difilter dari fetchOrders()
-            const orders = await fetchOrders();
+            const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
+            if(!res.ok) return;
+            
+            const data = await res.json();
+            const orders = data.record.orders || [];
             
             const tbody = document.getElementById('ordersTableBody');
             const empty = document.getElementById('emptyState');
@@ -956,51 +1200,29 @@
             table.style.display = 'table';
             empty.style.display = 'none';
 
-            // Sort terbaru
             orders.reverse().forEach(o => {
                 tbody.innerHTML += `
                     <tr>
                         <td><small>${o.date}</small></td>
                         <td><strong>${o.name}</strong></td>
                         <td>${o.class}</td>
+                        <td><small style="color:var(--text-light);">${o.note || '-'}</small></td>
                         <td><small>${o.items}</small></td>
                         <td style="color:var(--primary-color); font-weight:bold;">Rp ${o.total.toLocaleString()}</td>
                     </tr>`;
             });
         }
 
-        // --- CLEAR DATA (PRIVATE MODE) ---
-        async function clearAllData() {
-            if(!confirm("PERINGATAN: Ini akan menghapus SEMUA data di database Private! Lanjutkan?")) return;
-            
-            showLoading(true);
-            try {
-                // Mengirim array kosong [] ke JSONBin menggunakan Header Key
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
-                    method: 'PUT',
-                    headers: getHeaders(),
-                    body: JSON.stringify([]) 
-                });
-
-                if (!response.ok) throw new Error('Gagal menghapus data (Unauthorized?)');
-                
-                showToast("Database berhasil dikosongkan.");
-                loadAdminData(); // Refresh tabel
-
-            } catch (error) {
-                console.error(error);
-                showCustomAlert("Gagal Hapus", "Pastikan Master Key benar dan mode Private aktif.");
-            } finally {
-                showLoading(false);
-            }
-        }
-
         function downloadCSV() {
-            fetchOrders().then(orders => {
+            fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() })
+            .then(res => res.json())
+            .then(data => {
+                const orders = data.record.orders || [];
                 if(orders.length === 0) return alert("Tidak ada data.");
-                let csv = "ID,Tanggal,Nama,Kelas,Items,Total\n";
+                let csv = "ID,Tanggal,Nama,Kelas,Catatan,Items,Total\n";
                 orders.forEach(o => {
-                    csv += `${o.id},"${o.date}","${o.name}","${o.class}","${o.items}",${o.total}\n`;
+                    const safeNote = o.note ? `"${o.note.replace(/"/g, '""')}"` : "";
+                    csv += `${o.id},"${o.date}","${o.name}","${o.class}",${safeNote},"${o.items}",${o.total}\n`;
                 });
                 const link = document.createElement("a");
                 link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
@@ -1009,7 +1231,6 @@
             });
         }
 
-        // --- UTILITIES & UI ---
         function switchView(view) {
             window.scrollTo(0,0);
             const cust = document.getElementById('customerView');
@@ -1025,7 +1246,7 @@
         }
 
         function showLoading(show) {
-            const el = document.getElementById('loadingSpinner');
+            const el = document.getElementById("loadingSpinner");
             show ? el.classList.remove('hidden') : el.classList.add('hidden');
         }
 
@@ -1060,7 +1281,7 @@
             }
         });
 
-        function closePasswordModal() { document.getElementById('passwordModal').classList.remove('show'); }
+        function closePasswordModal() { document.getElementById("passwordModal").classList.remove("show"); }
         
         function checkPassword() {
             const input = document.getElementById('adminPasswordInput').value;
@@ -1074,23 +1295,52 @@
             }
         }
 
-        // --- NAV LOGIC (FIXED HEADER CLICK) ---
+        // --- ONLINE/OFFLINE DETECTOR ---
+        function setOnlineStatus(status) {
+            isOnline = status;
+            const dot = document.getElementById('connStatus');
+            const btnCheckout = document.getElementById('btnCheckout');
+            const offlineMsg = document.getElementById('offlineMsg');
+
+            if(status) {
+                dot.className = 'status-dot online';
+                btnCheckout.disabled = false;
+                btnCheckout.classList.remove('btn-secondary');
+                btnCheckout.classList.add('btn-primary');
+                offlineMsg.style.display = 'none';
+            } else {
+                dot.className = 'status-dot offline';
+                btnCheckout.disabled = true;
+                btnCheckout.classList.remove('btn-primary');
+                btnCheckout.classList.add('btn-secondary');
+                offlineMsg.style.display = 'block';
+            }
+        }
+
+        window.addEventListener('online', () => {
+            setOnlineStatus(true);
+            fetchCloudStock(true); 
+            showToast("Koneksi Internet Kembali");
+        });
+
+        window.addEventListener('offline', () => {
+            setOnlineStatus(false);
+            showCustomAlert("Offline", "Anda sedang offline. Data stok mungkin tidak akurat.");
+        });
+
+        // --- INIT ---
+        fetchCloudStock(true);
+
+        // --- NAV LOGIC ---
         const navLinks = document.querySelectorAll(".nav-link");
         const sections = document.querySelectorAll("section");
         const hamburger = document.getElementById('hamburger');
         const navContainer = document.getElementById('navLinks');
 
-        // Fungsi Scroll Active State
         function updateActiveNavLink() {
-            // CEK PENTING: Jika sedang di mode Admin, JANGAN jalankan logika scroll
-            // Kita cek apakah elemen adminView TIDAK memiliki class 'hidden'
-            if (document.getElementById('adminView').classList.contains('hidden') === false) {
-                return; // Stop di sini, jangan hitung scroll
-            }
-
+            if (document.getElementById('adminView').classList.contains('hidden') === false) return;
             let current = "";
             sections.forEach(section => {
-                // Pastikan section terlihat sebelum menghitung offset
                 if(section.offsetParent !== null) {
                     const sectionTop = section.offsetTop;
                     if (pageYOffset >= (sectionTop - 150)) {
@@ -1098,30 +1348,21 @@
                     }
                 }
             });
-
             navLinks.forEach(a => {
                 a.classList.remove("active");
-                if (a.getAttribute("href").includes(current)) {
-                    a.classList.add("active");
-                }
+                if (a.getAttribute("href").includes(current)) a.classList.add("active");
             });
         }
 
-        // Pasang listener scroll yang aman
         window.addEventListener("scroll", updateActiveNavLink);
 
-        // --- HAMBURGER MENU ---
         hamburger.addEventListener('click', () => {
-            // Mencegah menu hamburger dibuka saat di mode Admin
-            if (document.getElementById('adminView').classList.contains('hidden') === false) {
-                return;
-            }
+            if (document.getElementById('adminView').classList.contains('hidden') === false) return;
             navContainer.classList.toggle('active');
             hamburger.querySelector('i').classList.toggle('fa-bars');
             hamburger.querySelector('i').classList.toggle('fa-times');
         });
 
-        // Tutup menu saat link diklik
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navContainer.classList.remove('active');
