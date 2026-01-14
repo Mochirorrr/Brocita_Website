@@ -31,6 +31,7 @@
             --shadow-sm: 0 4px 15px rgba(0,0,0,0.08);
             --radius: 16px;
             --header-height: 75px; 
+            --danger-color: #e74c3c;
         }
 
         /* --- RESET & BASIC --- */
@@ -97,28 +98,24 @@
             transform: translateY(-3px); 
         }
         
-        .btn-block { width: 100%; }
-        .btn-danger {
-            background-color: #e74c3c;
-            color: white;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-        }
-        .btn-danger:hover { background-color: #c0392b; }
-        .btn-secondary {
-            background-color: #95a5a6;
-            color: white;
-            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
-        }
-        .btn-secondary:hover { background-color: #7f8c8d; }
-        .btn:disabled {
+        /* State Disabled (Rabu/Habis) */
+        .btn.disabled {
             background-color: #bdc3c7;
             cursor: not-allowed;
             transform: none !important;
             animation: none !important;
-            box-shadow: none;
+            box-shadow: none !important;
         }
+
+        .btn-block { width: 100%; }
         
-        /* Tombol Kecil (Untuk Edit/Delete Admin) */
+        .btn-danger { background-color: var(--danger-color); color: white; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); }
+        .btn-danger:hover { background-color: #c0392b; }
+        
+        .btn-secondary { background-color: #95a5a6; color: white; box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3); }
+        .btn-secondary:hover { background-color: #7f8c8d; }
+        
+        /* Tombol Kecil (Admin) */
         .btn-icon-sm {
             padding: 6px 10px;
             border-radius: 6px;
@@ -131,7 +128,7 @@
         }
         .btn-edit { background-color: #3498db; }
         .btn-edit:hover { background-color: #2980b9; transform: scale(1.1); }
-        .btn-delete { background-color: #e74c3c; }
+        .btn-delete { background-color: var(--danger-color); }
         .btn-delete:hover { background-color: #c0392b; transform: scale(1.1); }
         .btn-delete-item {
             background-color: #e67e22;
@@ -143,6 +140,28 @@
             border: none;
         }
         .btn-delete-item:hover { background-color: #d35400; }
+
+        /* --- BANNER TUTUP (RABU) --- */
+        #closedDayBanner {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: var(--header-height);
+            width: 100%;
+            z-index: 998;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+        #closedDayBanner i { margin-right: 8px; animation: shakeIcon 2s infinite; }
+        @keyframes shakeIcon { 
+            0%, 100% { transform: rotate(0deg); } 
+            25% { transform: rotate(-10deg); } 
+            75% { transform: rotate(10deg); } 
+        }
 
         /* --- HEADER & NAVIGATION --- */
         header {
@@ -239,6 +258,7 @@
             transition: transform 0.2s;
         }
         .cart-icon:active { transform: scale(0.9); }
+        .cart-icon.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
         .cart-badge {
             position: absolute;
@@ -322,6 +342,7 @@
             position: relative;
         }
         .product-card:hover { transform: translateY(-10px); box-shadow: var(--shadow); }
+        .product-card.disabled-card { opacity: 0.7; filter: grayscale(0.8); pointer-events: none; }
 
         .product-image { height: 200px; overflow: hidden; position: relative; }
         .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
@@ -349,11 +370,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         
-        @keyframes btnPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.85); }
-            100% { transform: scale(1); }
-        }
+        @keyframes btnPop { 0% { transform: scale(1); } 50% { transform: scale(0.85); } 100% { transform: scale(1); } }
         .btn-add.clicked { animation: btnPop 0.2s ease; }
 
         .btn-add:hover:not(:disabled) { background-color: var(--primary-color); transform: rotate(90deg); }
@@ -364,6 +381,7 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+            opacity: 0.6;
         }
 
         /* --- TESTIMONIALS --- */
@@ -660,7 +678,7 @@
                 <li><a href="#contact" class="nav-link">Kontak</a></li>
             </ul>
             <div class="header-actions">
-                <div class="cart-icon" onclick="toggleCart()">
+                <div class="cart-icon" id="cartIconBtn" onclick="toggleCart()">
                     <i class="fas fa-shopping-basket"></i>
                     <span class="cart-badge" id="cartBadge">0</span>
                 </div>
@@ -670,6 +688,11 @@
             </div>
         </nav>
     </header>
+
+    <!-- Banner Hari Tutup (Rabu) -->
+    <div id="closedDayBanner">
+        <i class="fas fa-store-slash"></i> MA'AF, HARI RABU BROCITA LIBUR. PESANAN DITUTUP.
+    </div>
 
     <!-- === VIEW PELANGGAN === -->
     <main id="customerView">
@@ -682,7 +705,7 @@
                     <h1>Kerenyahan Tahu <br><span>Brocita</span> Tiada Tara!</h1>
                     <p>Tahu premium dengan tekstur lembut di dalam dan renyah di luar. Tanpa pengawet, hanya rasa cinta.</p>
                     <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: inherit;">
-                        <a href="#products" class="btn btn-primary">Pesan Sekarang</a>
+                        <a href="#products" class="btn btn-primary" id="heroOrderBtn">Pesan Sekarang</a>
                     </div>
                 </div>
                 <div class="hero-image">
@@ -887,6 +910,9 @@
             <div id="offlineMsg" style="display:none; text-align:center; color:#e74c3c; font-size:0.8rem; margin-top:5px;">
                 <i class="fas fa-wifi"></i> Mode Offline (Tidak bisa pesan)
             </div>
+            <div id="wednesdayMsg" style="display:none; text-align:center; color:#e74c3c; font-size:0.8rem; margin-top:5px; font-weight:bold;">
+                <i class="fas fa-store-slash"></i> Toko Tutup (Hari Rabu)
+            </div>
         </div>
     </div>
 
@@ -971,6 +997,44 @@
         };
 
         const ADMIN_WA = "6283895912388";
+
+        // ==========================================
+        // PENGECEKAN HARI (LIBUR RABU)
+        // ==========================================
+        let isWednesday = false;
+        function checkDay() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = Minggu, 3 = Rabu
+            
+            if (dayOfWeek === 3) {
+                isWednesday = true;
+                document.getElementById('closedDayBanner').style.display = 'block';
+                document.body.style.paddingTop = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) + 40) + 'px';
+                
+                // Disable cart
+                const cartIcon = document.getElementById('cartIconBtn');
+                if(cartIcon) cartIcon.classList.add('disabled');
+                
+                // Disable checkout button
+                const btnCheckout = document.getElementById('btnCheckout');
+                if(btnCheckout) btnCheckout.disabled = true;
+                
+                // Show Wednesday message in cart
+                const wedMsg = document.getElementById('wednesdayMsg');
+                if(wedMsg) wedMsg.style.display = 'block';
+                
+            } else {
+                isWednesday = false;
+                document.getElementById('closedDayBanner').style.display = 'none';
+                document.body.style.paddingTop = '75px'; // Reset header height
+                
+                const cartIcon = document.getElementById('cartIconBtn');
+                if(cartIcon) cartIcon.classList.remove('disabled');
+                
+                const wedMsg = document.getElementById('wednesdayMsg');
+                if(wedMsg) wedMsg.style.display = 'none';
+            }
+        }
 
         // ==========================================
         // SISTEM PRODUK (URUTAN TETAP)
@@ -1072,13 +1136,22 @@
         }
 
         async function processCheckout() {
+            // CEK 1: Rabu
+            if(isWednesday) {
+                return showCustomAlert("Toko Tutup", "Maaf, hari Rabu Brocita tidak menerima pesanan.");
+            }
+
+            // CEK 2: Keranjang
             if (cart.length === 0) return showCustomAlert("Ups!", "Keranjang kosong.");
+            
+            // CEK 3: Input
             const name = document.getElementById('customerName').value;
             const cls = document.getElementById('customerClass').value;
             const note = document.getElementById('customerNote').value.trim();
 
             if (!name || !cls) return showCustomAlert("Lengkapi Data", "Isi Nama & Kelas dulu.");
 
+            // CEK 4: Online
             if(!isOnline) {
                 return showCustomAlert("Offline Mode", "Maaf, Anda sedang offline. Pesanan tidak dapat diproses demi keakuratan stok.");
             }
@@ -1482,9 +1555,6 @@
                     data.record.orders[idx].name = newName;
                     data.record.orders[idx].class = newClass;
                     data.record.orders[idx].total = newTotal;
-                    // Note: Jika Anda mengubah items string di modal, update item logika di sini lebih rumit.
-                    // Untuk sementara ini, items field hanya display di modal, update 'total' saja.
-                    // Jika ingin mengedit items (misal ganti qty), hapus saja lalu pesan ulang lebih aman.
                 }
 
                 await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
@@ -1521,9 +1591,24 @@
                 const isOutOfStock = p.currentStock <= 0;
                 const isLowStock = p.currentStock > 0 && p.currentStock <= 5;
                 
-                const btnClass = isOutOfStock ? 'btn-add disabled' : 'btn-add';
-                const btnIcon = isOutOfStock ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-plus"></i>';
-                const btnAction = isOutOfStock ? '' : `onclick="addToCart(event, ${p.id})" onmousedown="animateBtn(this)"`;
+                // Logika Disabled untuk Hari Rabu
+                const isWednesday = document.getElementById('closedDayBanner').style.display === 'block';
+
+                let btnClass = 'btn-add';
+                let btnIcon = '<i class="fas fa-plus"></i>';
+                let btnAction = `onclick="addToCart(event, ${p.id})" onmousedown="animateBtn(this)"`;
+                let btnDisabledAttr = '';
+
+                if (isWednesday || isOutOfStock) {
+                    btnClass += ' disabled'; // Tambah class disabled
+                    btnIcon = isWednesday ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-ban"></i>';
+                    btnAction = ''; // Hilangkan event click
+                    btnDisabledAttr = 'disabled'; // HTML disabled attribute
+                    
+                    if(isWednesday) {
+                        card.classList.add('disabled-card');
+                    }
+                }
                 
                 let stockText = `Sisa: ${p.currentStock}`;
                 let stockClass = "stock-tag";
@@ -1545,7 +1630,7 @@
                                 <span class="price">Rp ${p.price.toLocaleString('id-ID')}</span>
                                 <span class="${stockClass}">${stockText}</span>
                             </div>
-                            <button class="${btnClass}" ${btnAction} id="btn-${p.id}">${btnIcon}</button>
+                            <button class="${btnClass}" ${btnAction} ${btnDisabledAttr} id="btn-${p.id}">${btnIcon}</button>
                         </div>
                     </div>`;
                 productGrid.appendChild(card);
@@ -1559,6 +1644,11 @@
         }
 
         function addToCart(event, id) {
+            // Cek Rabu lagi demi keamanan
+            if(isWednesday) {
+                return showCustomAlert("Toko Tutup", "Maaf, hari Rabu Brocita tidak menerima pesanan.");
+            }
+
             const p = products.find(x => x.id === id);
             if(p.currentStock <= 0) return showCustomAlert("Stok Habis", "Maaf, barang ini sudah habis.");
 
@@ -1611,6 +1701,11 @@
         }
 
         function toggleCart() {
+            // Cek Rabu sebelum buka keranjang
+            if(isWednesday) {
+                showCustomAlert("Toko Tutup", "Maaf, hari Rabu Brocita tidak menerima pesanan.");
+                return;
+            }
             document.getElementById('cartSidebar').classList.toggle('open');
             document.getElementById('cartOverlay').toggleAttribute('open');
         }
@@ -1656,6 +1751,8 @@
                 loadAdminData();
             } else {
                 cust.classList.remove('hidden'); adm.classList.add('hidden'); cart.style.display = 'flex';
+                // Re-check hari saat kembali ke customer view
+                checkDay(); 
             }
         }
 
@@ -1718,9 +1815,11 @@
 
             if(status) {
                 dot.className = 'status-dot online';
-                btnCheckout.disabled = false;
-                btnCheckout.classList.remove('btn-secondary');
-                btnCheckout.classList.add('btn-primary');
+                btnCheckout.disabled = isWednesday; // Disable jika rabu, enable jika bukan
+                if(!isWednesday) {
+                    btnCheckout.classList.remove('btn-secondary');
+                    btnCheckout.classList.add('btn-primary');
+                }
                 offlineMsg.style.display = 'none';
             } else {
                 dot.className = 'status-dot offline';
@@ -1743,6 +1842,9 @@
         });
 
         // --- INIT ---
+        // 1. Cek Hari dulu
+        checkDay();
+        // 2. Fetch Stock
         fetchCloudStock(true);
 
         // --- NAV LOGIC ---
