@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Brocita - Tahu Premium (Live Stock)</title>
+    <title>Brocita - Tahu Premium</title>
     <meta name="description" content="Brocita menjual berbagai olahan tahu premium yang lezat, renyah, dan higienis.">
     
     <!-- Google Fonts -->
@@ -32,6 +32,7 @@
             --radius: 16px;
             --header-height: 75px; 
             --danger-color: #e74c3c;
+            --success-color: #27ae60;
         }
 
         /* --- RESET & BASIC --- */
@@ -98,7 +99,7 @@
             transform: translateY(-3px); 
         }
         
-        /* State Disabled (Rabu/Habis) */
+        /* State Disabled */
         .btn.disabled {
             background-color: #bdc3c7;
             cursor: not-allowed;
@@ -114,6 +115,9 @@
         
         .btn-secondary { background-color: #95a5a6; color: white; box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3); }
         .btn-secondary:hover { background-color: #7f8c8d; }
+        
+        .btn-success { background-color: var(--success-color); color: white; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+        .btn-success:hover { background-color: #219150; }
         
         /* Tombol Kecil (Admin) */
         .btn-icon-sm {
@@ -141,7 +145,7 @@
         }
         .btn-delete-item:hover { background-color: #d35400; }
 
-        /* --- BANNER TUTUP (RABU) --- */
+        /* --- BANNER TUTUP (LIBUR MANUAL SAJA) --- */
         #closedDayBanner {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
@@ -502,7 +506,7 @@
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } }
         .alert-btn { background-color: var(--primary-color); color: var(--white); border: none; padding: 10px 30px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-top:15px;}
 
-        /* --- ADMIN DASHBOARD (NEW STYLE) --- */
+        /* --- ADMIN DASHBOARD --- */
         #adminView {
             background-color: #f4f6f8;
             min-height: 100vh;
@@ -523,7 +527,45 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* Stok Control Grid */
+        .dashboard-stats-row-1 {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white; padding: 15px 25px; border-radius: 12px; box-shadow: var(--shadow-sm);
+            flex: 1; min-width: 150px; display: flex; flex-direction: column; justify-content: center;
+        }
+        .stat-card h5 { color: var(--text-light); font-size: 0.9rem; margin-bottom: 5px; }
+        .stat-card strong { font-size: 1.4rem; color: var(--primary-color); }
+
+        .dashboard-stats-row-2 {
+            margin-bottom: 30px;
+        }
+        .row-header {
+            font-size: 1.1rem; font-weight: 700; color: var(--text-dark);
+            margin-bottom: 15px; display: flex; align-items: center; gap: 8px;
+        }
+        .product-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .summary-product-card {
+            background: white; padding: 15px; border-radius: 10px; box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary-color);
+        }
+        .summary-name { font-size: 0.9rem; color: var(--text-light); margin-bottom: 5px; font-weight: 600; }
+        .summary-total { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); font-family: 'Fredoka'; }
+        
+        .progress-bg {
+            width: 100%; height: 6px; background: #eee; border-radius: 3px; margin-top: 10px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; background: var(--success-color); width: 0%; transition: width 1s ease-out; border-radius: 3px;
+        }
+
         .stock-control-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -592,7 +634,6 @@
         .btn-plus-circle { background-color: #27ae60; }
         .btn-minus-circle { background-color: #e74c3c; }
 
-        /* Table Styles */
         .table-responsive { 
             overflow-x: auto; 
             background: white; 
@@ -604,10 +645,38 @@
         th { background-color: var(--primary-color); color: white; font-weight: 600; white-space: nowrap; }
         tr:last-child td { border-bottom: none; }
         tr:hover { background-color: #fff8e1; }
-        .dashboard-stats { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-        .stat-card { background: white; padding: 15px 25px; border-radius: 12px; box-shadow: var(--shadow-sm); flex: 1; min-width: 150px; }
-        .stat-card h5 { color: var(--text-light); font-size: 0.9rem; margin-bottom: 5px; }
-        .stat-card strong { font-size: 1.4rem; color: var(--primary-color); }
+
+        /* HOLIDAY CONTROL PANEL */
+        .holiday-control-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; transition: .4s; border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px;
+            background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--danger-color); }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .switch-label { font-weight: 700; color: var(--text-dark); }
 
         /* Edit Modal */
         .edit-modal-overlay {
@@ -689,9 +758,9 @@
         </nav>
     </header>
 
-    <!-- Banner Hari Tutup (Rabu) -->
+    <!-- Banner Hari Tutup (Mode Libur Manual) -->
     <div id="closedDayBanner">
-        <i class="fas fa-store-slash"></i> MA'AF, HARI RABU BROCITA LIBUR. PESANAN DITUTUP.
+        <i class="fas fa-store-slash"></i> <span id="bannerText">MA'AF, BROCITA SEDANG LIBUR.</span>
     </div>
 
     <!-- === VIEW PELANGGAN === -->
@@ -709,6 +778,7 @@
                     </div>
                 </div>
                 <div class="hero-image">
+                    <!-- PERBAIKAN: Menggunakan gambar placeholder jika lokal tidak ada -->
                     <img src="Logo.png" alt="Tahu Goreng Brocita" onerror="this.src='https://picsum.photos/seed/tofu1/600/600'">
                 </div>
             </div>
@@ -720,7 +790,7 @@
                 <div class="section-title" data-aos="fade-up">
                     <h2>Menu <span>Populer</span></h2>
                     <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-top:10px;">
-                        <p style="color:var(--text-light)">Stok Real-time (Online).</p>
+                        <p style="color:var(--text-light)">Stok Real-time (Harap Online).</p>
                         <button onclick="fetchCloudStock(true)" style="background:none; border:none; color:var(--primary-color); cursor:pointer; font-size:1.2rem;" title="Refresh Stok">
                             <i class="fas fa-sync-alt" id="refreshIcon"></i>
                         </button>
@@ -818,8 +888,20 @@
                 </div>
             </div>
 
-            <!-- Stats -->
-            <div class="dashboard-stats">
+            <!-- HOLIDAY CONTROL (Mode Libur) -->
+            <div class="holiday-control-panel">
+                <div>
+                    <h4 style="margin:0 0 5px 0; color:var(--text-dark);"><i class="fas fa-calendar-times"></i> Mode Libur</h4>
+                    <small style="color:var(--text-light);">Aktifkan untuk menutup toko secara manual.</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="holidaySwitch" onchange="toggleHolidayMode(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <!-- ROW 1: GENERAL STATS -->
+            <div class="dashboard-stats-row-1">
                 <div class="stat-card">
                     <h5>Total Pesanan</h5>
                     <strong id="totalOrdersCount">0</strong>
@@ -827,6 +909,19 @@
                 <div class="stat-card">
                     <h5>Total Pendapatan</h5>
                     <strong id="totalRevenue">Rp 0</strong>
+                </div>
+            </div>
+
+            <!-- ROW 2: PRODUCT SUMMARY -->
+            <div class="dashboard-stats-row-2">
+                <div class="row-header">
+                    <i class="fas fa-chart-pie" style="color:var(--primary-color);"></i> Terjual Produk (Unit)
+                </div>
+                <div class="product-summary-grid" id="productSummaryGrid">
+                    <!-- JS will render summary cards here -->
+                    <div style="grid-column: 1/-1; text-align:center; padding: 20px; color:#999;">
+                        <i class="fas fa-spinner fa-spin"></i> Menghitung...
+                    </div>
                 </div>
             </div>
 
@@ -846,7 +941,7 @@
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
                     <h3 style="color:var(--text-dark);"><i class="fas fa-clipboard-list"></i> Data Pesanan (Urut Produk)</h3>
                     <div style="display:flex; gap:10px;">
-                        <button onclick="downloadCSV()" class="btn btn-success btn-sm" style="background-color:#27ae60;"><i class="fas fa-file-csv"></i> CSV</button>
+                        <button onclick="downloadCSV()" class="btn btn-success btn-sm"><i class="fas fa-file-csv"></i> CSV</button>
                         <button onclick="resetOrdersData()" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus Semua</button>
                     </div>
                 </div>
@@ -892,6 +987,12 @@
         </div>
         <div class="cart-footer">
             <div class="total-price"><span>Total:</span><span id="cartTotal">Rp 0</span></div>
+            
+            <!-- Online Warning -->
+            <div id="offlineMsg" style="display:none; background:#fff3cd; color:#856404; padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.9rem; text-align:center; border:1px solid #ffeeba;">
+                <i class="fas fa-wifi"></i> Perlu koneksi internet untuk pesan.
+            </div>
+
             <div class="form-group">
                 <label for="customerName">Nama Pemesan <span style="color:red">*</span></label>
                 <input type="text" id="customerName" placeholder="Nama Kamu">
@@ -907,12 +1008,7 @@
             <button id="btnCheckout" class="btn btn-primary btn-block" onclick="processCheckout()">
                 <i class="fab fa-whatsapp"></i> PESAN VIA WA
             </button>
-            <div id="offlineMsg" style="display:none; text-align:center; color:#e74c3c; font-size:0.8rem; margin-top:5px;">
-                <i class="fas fa-wifi"></i> Mode Offline (Tidak bisa pesan)
-            </div>
-            <div id="wednesdayMsg" style="display:none; text-align:center; color:#e74c3c; font-size:0.8rem; margin-top:5px; font-weight:bold;">
-                <i class="fas fa-store-slash"></i> Toko Tutup (Hari Rabu)
-            </div>
+            <div id="checkoutMsg" style="display:none; text-align:center; color:#e74c3c; font-size:0.8rem; margin-top:5px; font-weight:bold;"></div>
         </div>
     </div>
 
@@ -988,7 +1084,7 @@
         AOS.init({ once: true, offset: 100, duration: 800 });
 
         // ==========================================
-        // KONFIGURASI PENTING (SUDAH DIISI)
+        // KONFIGURASI DATABASE
         // ==========================================
         const DB_CONFIG = {
             binId: "696485e443b1c97be92a5519", 
@@ -999,45 +1095,7 @@
         const ADMIN_WA = "6283895912388";
 
         // ==========================================
-        // PENGECEKAN HARI (LIBUR RABU)
-        // ==========================================
-        let isWednesday = false;
-        function checkDay() {
-            const today = new Date();
-            const dayOfWeek = today.getDay(); // 0 = Minggu, 3 = Rabu
-            
-            if (dayOfWeek === 3) {
-                isWednesday = true;
-                document.getElementById('closedDayBanner').style.display = 'block';
-                document.body.style.paddingTop = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) + 40) + 'px';
-                
-                // Disable cart
-                const cartIcon = document.getElementById('cartIconBtn');
-                if(cartIcon) cartIcon.classList.add('disabled');
-                
-                // Disable checkout button
-                const btnCheckout = document.getElementById('btnCheckout');
-                if(btnCheckout) btnCheckout.disabled = true;
-                
-                // Show Wednesday message in cart
-                const wedMsg = document.getElementById('wednesdayMsg');
-                if(wedMsg) wedMsg.style.display = 'block';
-                
-            } else {
-                isWednesday = false;
-                document.getElementById('closedDayBanner').style.display = 'none';
-                document.body.style.paddingTop = '75px'; // Reset header height
-                
-                const cartIcon = document.getElementById('cartIconBtn');
-                if(cartIcon) cartIcon.classList.remove('disabled');
-                
-                const wedMsg = document.getElementById('wednesdayMsg');
-                if(wedMsg) wedMsg.style.display = 'none';
-            }
-        }
-
-        // ==========================================
-        // SISTEM PRODUK (URUTAN TETAP)
+        // SISTEM PRODUK
         // ==========================================
         const DAILY_LIMIT = 10; 
 
@@ -1052,6 +1110,7 @@
         let cart = [];
         let isOnline = navigator.onLine;
         let currentCloudData = null;
+        let isShopOpen = true; // Global status toko (buka/tutup)
         
         // ==========================================
         // API CLOUD HANDLER (JSONBIN)
@@ -1106,9 +1165,14 @@
                     });
                 }
 
+                // CEK STATUS LIBUR (MANUAL SAJA, RABU DIHAPUS)
+                checkShopStatus();
+
                 if(!document.getElementById('adminView').classList.contains('hidden')) {
+                    renderAdminStats(); 
                     renderAdminStockControls();
                     renderAdminOrders();
+                    updateAdminHolidaySwitch(); // Update posisi switch
                 } else {
                     renderProducts();
                 }
@@ -1135,26 +1199,131 @@
             }
         }
 
-        async function processCheckout() {
-            // CEK 1: Rabu
-            if(isWednesday) {
-                return showCustomAlert("Toko Tutup", "Maaf, hari Rabu Brocita tidak menerima pesanan.");
+        // ==========================================
+        // LOGIKA LIBUR (MANUAL SAJA - RABU DIHAPUS)
+        // ==========================================
+        function checkShopStatus() {
+            const banner = document.getElementById('closedDayBanner');
+            const cartIcon = document.getElementById('cartIconBtn');
+            const checkoutMsg = document.getElementById('checkoutMsg');
+            const btnCheckout = document.getElementById('btnCheckout');
+            const heroBtn = document.getElementById('heroOrderBtn');
+            
+            let reason = "";
+            let isClosed = false;
+
+            // HANYA CEK: Mode Libur Manual (Hari Rabu SUDAH DIHAPUS)
+            if (currentCloudData.isHoliday === true) {
+                isClosed = true;
+                reason = "BROCITA SEDANG LIBUR.";
             }
 
-            // CEK 2: Keranjang
+            // Update Global State
+            isShopOpen = !isClosed;
+
+            // Terapkan ke UI
+            if (isClosed) {
+                banner.style.display = 'block';
+                document.getElementById('bannerText').innerText = reason;
+                cartIcon.classList.add('disabled');
+                
+                if(heroBtn) heroBtn.classList.add('disabled');
+
+                if(checkoutMsg) {
+                    checkoutMsg.style.display = 'block';
+                    checkoutMsg.innerHTML = '<i class="fas fa-store-slash"></i> ' + reason;
+                }
+                if(btnCheckout) btnCheckout.disabled = true;
+
+                // Update CSS body padding
+                document.body.style.paddingTop = (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) + 40) + 'px'; 
+            } else {
+                banner.style.display = 'none';
+                cartIcon.classList.remove('disabled');
+                
+                if(heroBtn) heroBtn.classList.remove('disabled');
+
+                if(checkoutMsg) checkoutMsg.style.display = 'none';
+                if(btnCheckout) btnCheckout.disabled = false;
+                
+                document.body.style.paddingTop = '75px';
+            }
+        }
+
+        // Fungsi untuk Admin mengubah status libur
+        async function toggleHolidayMode(checkbox) {
+            // WAJIB ONLINE
+            if(!isOnline) {
+                showCustomAlert("Koneksi Diperlukan", "Anda harus Online untuk mengubah status libur.");
+                // Kembalikan posisi switch visual agar sinkron
+                checkbox.checked = currentCloudData.isHoliday;
+                return;
+            }
+
+            const isHoliday = checkbox.checked; // true = libur, false = buka
+            const msg = isHoliday ? "Mengaktifkan mode libur..." : "Menonaktifkan mode libur...";
+            
+            showLoading(true);
+            try {
+                // Fetch data terbaru dulu (avoid overwrite)
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
+                const db = await res.json();
+
+                // Update field isHoliday
+                db.record.isHoliday = isHoliday;
+
+                // Simpan
+                await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify(db.record)
+                });
+
+                // Refresh local state
+                currentCloudData.isHoliday = isHoliday;
+                checkShopStatus(); // Langsung terapkan efek
+                
+                showToast(isHoliday ? "Mode Libur Diaktifkan" : "Toko Dibuka");
+
+            } catch (e) {
+                console.error(e);
+                showCustomAlert("Gagal", "Gagal mengubah status libur.");
+                // Kembalikan posisi switch jika gagal
+                checkbox.checked = !isHoliday; 
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function updateAdminHolidaySwitch() {
+            const sw = document.getElementById('holidaySwitch');
+            if(currentCloudData && currentCloudData.isHoliday === true) {
+                sw.checked = true;
+            } else {
+                sw.checked = false;
+            }
+        }
+
+        async function processCheckout() {
+            // CEK 1: Status Internet (WAJIB ONLINE)
+            if(!isOnline) {
+                return showCustomAlert("Perlu Koneksi Internet", "Maaf, Anda harus Online untuk memesan demi sinkronisasi stok real-time.");
+            }
+
+            // CEK 2: Status Toko (Libur)
+            if(!isShopOpen) {
+                return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode Libur).");
+            }
+
+            // CEK 3: Keranjang
             if (cart.length === 0) return showCustomAlert("Ups!", "Keranjang kosong.");
             
-            // CEK 3: Input
+            // CEK 4: Input
             const name = document.getElementById('customerName').value;
             const cls = document.getElementById('customerClass').value;
             const note = document.getElementById('customerNote').value.trim();
 
             if (!name || !cls) return showCustomAlert("Lengkapi Data", "Isi Nama & Kelas dulu.");
-
-            // CEK 4: Online
-            if(!isOnline) {
-                return showCustomAlert("Offline Mode", "Maaf, Anda sedang offline. Pesanan tidak dapat diproses demi keakuratan stok.");
-            }
 
             showLoading(true);
 
@@ -1295,6 +1464,57 @@
         // ADMIN FEATURES
         // ==========================================
 
+        function renderAdminStats() {
+            if(!currentCloudData || !currentCloudData.orders) return;
+            
+            const orders = currentCloudData.orders;
+            
+            // Update General Stats
+            document.getElementById('totalOrdersCount').innerText = orders.length;
+            const revenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+            document.getElementById('totalRevenue').innerText = 'Rp ' + revenue.toLocaleString('id-ID');
+
+            // Calculate Product Summary
+            const productSales = {};
+            
+            // Initialize
+            products.forEach(p => productSales[p.id] = 0);
+
+            // Sum up quantities from all orders
+            orders.forEach(order => {
+                if(order.items) {
+                    order.items.forEach(item => {
+                        if(productSales[item.id] !== undefined) {
+                            productSales[item.id] += item.qty;
+                        }
+                    });
+                }
+            });
+
+            // Render Summary Cards
+            const summaryGrid = document.getElementById('productSummaryGrid');
+            summaryGrid.innerHTML = '';
+
+            // Find max value for progress bar scaling
+            const maxVal = Math.max(...Object.values(productSales));
+
+            products.forEach(p => {
+                const totalSold = productSales[p.id] || 0;
+                const percent = maxVal > 0 ? (totalSold / maxVal) * 100 : 0;
+
+                const card = document.createElement('div');
+                card.className = 'summary-product-card';
+                card.innerHTML = `
+                    <div class="summary-name">${p.name}</div>
+                    <div class="summary-total">${totalSold} Unit</div>
+                    <div class="progress-bg">
+                        <div class="progress-fill" style="width: ${percent}%"></div>
+                    </div>
+                `;
+                summaryGrid.appendChild(card);
+            });
+        }
+
         function renderAdminStockControls() {
             const container = document.getElementById('adminStockGrid');
             if(!currentCloudData || !currentCloudData.stock) return;
@@ -1314,6 +1534,7 @@
                         <button class="stock-btn-circle btn-plus-circle" onclick="adjustAdminStock(${p.id}, 1)"><i class="fas fa-plus"></i></button>
                     </div>
                 `;
+                
                 container.appendChild(card);
             });
         }
@@ -1373,7 +1594,7 @@
             }
         }
 
-        // D. Render Orders Table (LOGIKA BARU: EXPLODE ITEMS & RE-CALC)
+        // Render Orders Table
         function renderAdminOrders() {
             const tbody = document.getElementById('ordersTableBody');
             const empty = document.getElementById('emptyState');
@@ -1382,12 +1603,6 @@
             if(!currentCloudData || !currentCloudData.orders) return;
 
             const orders = currentCloudData.orders;
-            
-            document.getElementById('totalOrdersCount').innerText = orders.length;
-            
-            // Re-calc Revenue berdasarkan 'total' di setiap order (bukan item)
-            const revenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
-            document.getElementById('totalRevenue').innerText = 'Rp ' + revenue.toLocaleString('id-ID');
 
             tbody.innerHTML = '';
             if (orders.length === 0) {
@@ -1442,7 +1657,7 @@
             });
         }
 
-        // E. Hapus Satu Order (Hapus Seluruh Pesanan)
+        // Hapus Satu Order
         async function deleteSingleOrder(id) {
             if(!confirm("Hapus pesanan ini beserta item-itemnya?")) return;
             showLoading(true);
@@ -1466,7 +1681,7 @@
             }
         }
 
-        // F. Hapus Satu Item (BARU: RECALC TOTAL)
+        // Hapus Satu Item
         async function deleteSingleItem(orderId, itemId) {
             const order = currentCloudData.orders.find(o => o.orderId === orderId);
             if(!order) return;
@@ -1522,7 +1737,6 @@
             document.getElementById('editOrderId').value = order.orderId;
             document.getElementById('editName').value = order.name;
             document.getElementById('editClass').value = order.class;
-            // Render items string ke textarea agar admin tahu isinya
             const itemsString = order.items.map(i => `${i.name} (${i.qty})`).join(', ');
             document.getElementById('editItems').value = itemsString;
             document.getElementById('editTotal').value = order.total;
@@ -1591,21 +1805,21 @@
                 const isOutOfStock = p.currentStock <= 0;
                 const isLowStock = p.currentStock > 0 && p.currentStock <= 5;
                 
-                // Logika Disabled untuk Hari Rabu
-                const isWednesday = document.getElementById('closedDayBanner').style.display === 'block';
+                // Logika Disabled berdasarkan Status Toko (Buka/Tutup)
+                const isShopClosed = !isShopOpen;
 
                 let btnClass = 'btn-add';
                 let btnIcon = '<i class="fas fa-plus"></i>';
                 let btnAction = `onclick="addToCart(event, ${p.id})" onmousedown="animateBtn(this)"`;
                 let btnDisabledAttr = '';
 
-                if (isWednesday || isOutOfStock) {
-                    btnClass += ' disabled'; // Tambah class disabled
-                    btnIcon = isWednesday ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-ban"></i>';
-                    btnAction = ''; // Hilangkan event click
-                    btnDisabledAttr = 'disabled'; // HTML disabled attribute
+                if (isShopClosed || isOutOfStock) {
+                    btnClass += ' disabled'; 
+                    btnIcon = isShopClosed ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-ban"></i>';
+                    btnAction = ''; 
+                    btnDisabledAttr = 'disabled'; 
                     
-                    if(isWednesday) {
+                    if(isShopClosed) {
                         card.classList.add('disabled-card');
                     }
                 }
@@ -1644,9 +1858,9 @@
         }
 
         function addToCart(event, id) {
-            // Cek Rabu lagi demi keamanan
-            if(isWednesday) {
-                return showCustomAlert("Toko Tutup", "Maaf, hari Rabu Brocita tidak menerima pesanan.");
+            // Cek Status Toko
+            if(!isShopOpen) {
+                return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode Libur).");
             }
 
             const p = products.find(x => x.id === id);
@@ -1701,9 +1915,9 @@
         }
 
         function toggleCart() {
-            // Cek Rabu sebelum buka keranjang
-            if(isWednesday) {
-                showCustomAlert("Toko Tutup", "Maaf, hari Rabu Brocita tidak menerima pesanan.");
+            // Cek Status Toko sebelum buka keranjang
+            if(!isShopOpen) {
+                showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode Libur).");
                 return;
             }
             document.getElementById('cartSidebar').classList.toggle('open');
@@ -1751,8 +1965,7 @@
                 loadAdminData();
             } else {
                 cust.classList.remove('hidden'); adm.classList.add('hidden'); cart.style.display = 'flex';
-                // Re-check hari saat kembali ke customer view
-                checkDay(); 
+                checkShopStatus(); 
             }
         }
 
@@ -1815,18 +2028,25 @@
 
             if(status) {
                 dot.className = 'status-dot online';
-                btnCheckout.disabled = isWednesday; // Disable jika rabu, enable jika bukan
-                if(!isWednesday) {
+                
+                // Jika Online, ikuti status Toko (Libur/Buka)
+                btnCheckout.disabled = !isShopOpen; 
+                if(!isShopOpen) {
+                    btnCheckout.classList.remove('btn-primary');
+                    btnCheckout.classList.add('btn-secondary');
+                } else {
                     btnCheckout.classList.remove('btn-secondary');
                     btnCheckout.classList.add('btn-primary');
                 }
-                offlineMsg.style.display = 'none';
+                
+                if(offlineMsg) offlineMsg.style.display = 'none';
             } else {
-                dot.className = 'status-dot offline';
-                btnCheckout.disabled = true;
+                dot.className = 'status-dot.offline';
+                // Jika Offline, WAJIB disable tombol checkout (Sesuai request)
+                btnCheckout.disabled = true; 
                 btnCheckout.classList.remove('btn-primary');
                 btnCheckout.classList.add('btn-secondary');
-                offlineMsg.style.display = 'block';
+                if(offlineMsg) offlineMsg.style.display = 'block';
             }
         }
 
@@ -1842,9 +2062,7 @@
         });
 
         // --- INIT ---
-        // 1. Cek Hari dulu
-        checkDay();
-        // 2. Fetch Stock
+        // 1. Fetch Stock (checkShopStatus akan dipanggil di dalam fetchCloudStock)
         fetchCloudStock(true);
 
         // --- NAV LOGIC ---
