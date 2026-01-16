@@ -738,14 +738,18 @@
     <header>
         <nav>
             <div class="logo" id="secretDoor">
-                <i class="fas fa-utensils"></i> Brocita <span id="connStatus" class="status-dot"></span>
+                <i class="fas fa-utensils"></i> Brocita 
+                <span id="connStatus" class="status-dot"></span>
             </div>
+            
+            <!-- Nav Links: Murni untuk Customer. Tidak ada link dashboard di sini -->
             <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="nav-link">Beranda</a></li>
-                <li><a href="#products" class="nav-link">Menu</a></li>
-                <li><a href="#testi" class="nav-link">Testimoni</a></li>
-                <li><a href="#contact" class="nav-link">Kontak</a></li>
+                <li><a href="#home" class="nav-link" onclick="navigateToCustomer()">Beranda</a></li>
+                <li><a href="#products" class="nav-link" onclick="navigateToCustomer()">Menu</a></li>
+                <li><a href="#testi" class="nav-link" onclick="navigateToCustomer()">Testimoni</a></li>
+                <li><a href="#contact" class="nav-link" onclick="navigateToCustomer()">Kontak</a></li>
             </ul>
+
             <div class="header-actions">
                 <div class="cart-icon" id="cartIconBtn" onclick="toggleCart()">
                     <i class="fas fa-shopping-basket"></i>
@@ -778,7 +782,6 @@
                     </div>
                 </div>
                 <div class="hero-image">
-                    <!-- PERBAIKAN: Menggunakan gambar placeholder jika lokal tidak ada -->
                     <img src="Logo.png" alt="Tahu Goreng Brocita" onerror="this.src='https://picsum.photos/seed/tofu1/600/600'">
                 </div>
             </div>
@@ -1110,7 +1113,7 @@
         let cart = [];
         let isOnline = navigator.onLine;
         let currentCloudData = null;
-        let isShopOpen = true; // Global status toko (buka/tutup)
+        let isShopOpen = true;
         
         // ==========================================
         // API CLOUD HANDLER (JSONBIN)
@@ -1172,7 +1175,7 @@
                     renderAdminStats(); 
                     renderAdminStockControls();
                     renderAdminOrders();
-                    updateAdminHolidaySwitch(); // Update posisi switch
+                    updateAdminHolidaySwitch(); 
                 } else {
                     renderProducts();
                 }
@@ -1368,7 +1371,7 @@
                     name: name,
                     class: cls,
                     note: note || "-",
-                    items: dbItems, // SIMPAN SEBAGAI ARRAY OBJECT
+                    items: dbItems, 
                     total: total
                 };
 
@@ -1815,7 +1818,7 @@
 
                 if (isShopClosed || isOutOfStock) {
                     btnClass += ' disabled'; 
-                    btnIcon = isShopClosed ? '<i class="fas fa-ban"></i>' : '<i class="fas fa-ban"></i>';
+                    btnIcon = '<i class="fas fa-ban"></i>';
                     btnAction = ''; 
                     btnDisabledAttr = 'disabled'; 
                     
@@ -1925,9 +1928,56 @@
         }
 
         // ==========================================
-        // ADMIN & UTILITIES
+        // ADMIN & UTILITIES (UPDATED)
         // ==========================================
         
+        // Function: Memastikan Login Admin Bertahan saat Refresh
+        function checkSessionPersistence() {
+            const isAdmin = sessionStorage.getItem('brocita_isAdmin') === 'true';
+            
+            if (isAdmin) {
+                const lastView = sessionStorage.getItem('brocita_lastView') || 'customer';
+                
+                if (lastView === 'admin') {
+                    switchView('admin'); 
+                }
+            }
+        }
+
+        function switchView(view) {
+            window.scrollTo(0,0);
+            const cust = document.getElementById('customerView');
+            const adm = document.getElementById('adminView');
+            const cart = document.querySelector('.cart-icon');
+            
+            if(view === 'admin') {
+                cust.classList.add('hidden'); 
+                adm.classList.remove('hidden'); 
+                cart.style.display = 'none';
+                
+                sessionStorage.setItem('brocita_isAdmin', 'true');
+                sessionStorage.setItem('brocita_lastView', 'admin');
+                
+                loadAdminData();
+            } else {
+                cust.classList.remove('hidden'); 
+                adm.classList.add('hidden'); 
+                cart.style.display = 'flex';
+                
+                sessionStorage.setItem('brocita_lastView', 'customer');
+                checkShopStatus(); 
+            }
+        }
+
+        // Function: Helper untuk navigasi dari Nav Link ke Customer View
+        function navigateToCustomer() {
+            document.getElementById('navLinks').classList.remove('active');
+            
+            if (!document.getElementById('adminView').classList.contains('hidden')) {
+                switchView('customer');
+            }
+        }
+
         async function loadAdminData() {
             await fetchCloudStock(true);
         }
@@ -1952,21 +2002,6 @@
                 link.download = `Brocita_Report_${new Date().toISOString().slice(0,10)}.csv`;
                 link.click();
             });
-        }
-
-        function switchView(view) {
-            window.scrollTo(0,0);
-            const cust = document.getElementById('customerView');
-            const adm = document.getElementById('adminView');
-            const cart = document.querySelector('.cart-icon');
-            
-            if(view === 'admin') {
-                cust.classList.add('hidden'); adm.classList.remove('hidden'); cart.style.display = 'none';
-                loadAdminData();
-            } else {
-                cust.classList.remove('hidden'); adm.classList.add('hidden'); cart.style.display = 'flex';
-                checkShopStatus(); 
-            }
         }
 
         function showLoading(show) {
@@ -2011,6 +2046,7 @@
             const input = document.getElementById('adminPasswordInput').value;
             if(input === DB_CONFIG.uiPassword) {
                 closePasswordModal();
+                sessionStorage.setItem('brocita_isAdmin', 'true'); 
                 switchView('admin');
                 showToast("Login Admin Berhasil");
             } else {
@@ -2062,7 +2098,10 @@
         });
 
         // --- INIT ---
-        // 1. Fetch Stock (checkShopStatus akan dipanggil di dalam fetchCloudStock)
+        // 1. Cek session persistence (Login Admin bertahan saat refresh)
+        checkSessionPersistence();
+
+        // 2. Fetch Stock (checkShopStatus akan dipanggil di dalam fetchCloudStock)
         fetchCloudStock(true);
 
         // --- NAV LOGIC ---
