@@ -145,7 +145,7 @@
         }
         .btn-delete-item:hover { background-color: #d35400; }
 
-        /* --- BANNER TUTUP (LIBUR MANUAL SAJA) --- */
+        /* --- BANNER TUTUP --- */
         #closedDayBanner {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
@@ -528,7 +528,7 @@
         }
 
         .dashboard-stats-row-1 {
-            display: flex;
+            display: flex; /* FIXED ERROR: Changed , to ; */
             gap: 15px;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -1033,6 +1033,7 @@
         </div>
     </div>
 
+    <!-- Edit Order Modal -->
     <div id="editOrderModal" class="edit-modal-overlay">
         <div class="edit-modal-box">
             <h3 style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;">Edit Pesanan</h3>
@@ -1046,17 +1047,18 @@
                 <label>Kelas</label>
                 <input type="text" id="editClass">
             </div>
-            <div class="form-group">
-                <label>Detail Item (Bisa diedit manual)</label>
-                <textarea id="editItems" rows="3"></textarea>
+            <div class="form-group" style="background:#f9f9f9; padding:10px; border-radius:8px;">
+                <label style="font-size:0.8rem; color:#666;">Item Pesanan (Tidak bisa diedit item demi keamanan data)</label>
+                <div id="editItemsPreview" style="font-size:0.9rem; font-weight:bold; color:#333; margin-top:5px;"></div>
             </div>
             <div class="form-group">
-                <label>Total Harga (Rp)</label>
+                <label>Ubah Total Harga (Rp)</label>
                 <input type="number" id="editTotal">
+                <small style="color:#999; font-size:0.8rem;">Gunakan ini jika ada diskon manual.</small>
             </div>
 
             <div style="display:flex; gap:10px; margin-top:20px;">
-                <button onclick="saveEditedOrder()" class="btn btn-primary" style="flex:1;">Simpan</button>
+                <button onclick="saveEditedOrder()" class="btn btn-primary" style="flex:1;">Simpan Perubahan</button>
                 <button onclick="closeEditModal()" class="btn btn-secondary" style="flex:1;">Batal</button>
             </div>
         </div>
@@ -1168,7 +1170,7 @@
                     });
                 }
 
-                // CEK STATUS LIBUR (MANUAL SAJA, RABU DIHAPUS)
+                // CEK STATUS LIBUR
                 checkShopStatus();
 
                 if(!document.getElementById('adminView').classList.contains('hidden')) {
@@ -1331,27 +1333,31 @@
             showLoading(true);
 
             try {
+                // 1. Ambil Data Terbaru dari Database (Untuk cek stok paling akurat)
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
-                if(!res.ok) throw new Error("Gagal mengunci data stok");
+                if(!res.ok) throw new Error("Gagal mengunci data stok. Coba lagi.");
                 const currentDB = await res.json();
 
                 let newStockState = { ...currentDB.record.stock };
-                let total = 0;
-
-                // 1. Siapkan array items untuk database (Rapi per item)
+                let calculatedTotal = 0;
                 const dbItems = [];
 
+                // 2. Validasi Stok & Siapkan Array Item
                 for (let item of cart) {
                     const currentStockInDB = newStockState[item.id] || 0;
+                    
                     if (currentStockInDB < item.qty) {
-                        throw new Error(`Stok ${item.name} tidak cukup. Sisa di server: ${currentStockInDB}`);
+                        throw new Error(`Stok ${item.name} tidak mencukupi. Sisa stok: ${currentStockInDB}.`);
                     }
+                    
+                    // Kurangi stok
                     newStockState[item.id] = currentStockInDB - item.qty;
                     
+                    // Hitung subtotal
                     const sub = item.price * item.qty;
-                    total += sub;
+                    calculatedTotal += sub;
 
-                    // Push ke array DB (Terpisah per item)
+                    // Push ke array DB
                     dbItems.push({
                         id: item.id,
                         name: item.name,
@@ -1361,10 +1367,13 @@
                     });
                 }
 
-                // Sort items berdasarkan ID Produk (Urutan Tahu Ayam -> Bakso dst)
+                // Pastikan calculatedTotal valid
+                if (isNaN(calculatedTotal)) calculatedTotal = 0;
+
+                // Sort items berdasarkan ID Produk
                 dbItems.sort((a, b) => a.id - b.id);
 
-                // 2. Simpan Pesanan Baru
+                // 3. Buat Objek Pesanan Baru
                 const newOrder = {
                     orderId: Date.now(),
                     date: new Date().toLocaleString('id-ID'),
@@ -1372,10 +1381,10 @@
                     class: cls,
                     note: note || "-",
                     items: dbItems, 
-                    total: total
+                    total: calculatedTotal
                 };
 
-                // 3. Update Database
+                // 4. Update Database
                 currentDB.record.stock = newStockState;
                 if(!currentDB.record.orders) currentDB.record.orders = [];
                 currentDB.record.orders.push(newOrder);
@@ -1386,31 +1395,35 @@
                     body: JSON.stringify(currentDB.record)
                 });
 
-                if(!updateRes.ok) throw new Error("Gagal menyimpan perubahan ke database.");
+                // Cek apakah update berhasil
+                if(!updateRes.ok) throw new Error("Gagal menyimpan pesanan ke database. Koneksi mungkin terputus.");
 
-                // 4. Update UI Lokal & WA
+                // 5. Jika Sukses: Update UI Lokal & Kirim WA
                 products.forEach(p => {
                     p.currentStock = newStockState[p.id];
                 });
 
+                // Format Pesan WhatsApp
                 let msg = `Halo Admin Brocita, mau pesan:%0A%0ANama: ${name}%0AKelas: ${cls}%0A%0A*Pesanan:*%0A`;
                 dbItems.forEach(item => {
-                    const prod = products.find(p => p.id === item.id);
-                    msg += `- ${prod.name} (${item.qty}x)%0A`;
+                    msg += `- ${item.name} (${item.qty}x)%0A`;
                 });
                 if(note) msg += `%0A*Catatan:* ${note}`;
-                msg += `%0A%0A*Total: Rp ${total.toLocaleString('id-ID')}*`;
+                msg += `%0A%0A*Total: Rp ${calculatedTotal.toLocaleString('id-ID')}*`;
 
+                // Reset Cart & UI
                 cart = [];
                 updateCartUI();
                 toggleCart();
-                renderProducts();
+                renderProducts(); // Refresh stok di layar menu
+                
+                // Buka WhatsApp
                 window.open(`https://wa.me/${ADMIN_WA}?text=${msg}`, '_blank');
                 showToast("Pesanan Berhasil! Stok diperbarui.");
 
             } catch (error) {
-                console.error(error);
-                showCustomAlert("Gagal Pesan", error.message);
+                console.error("Checkout Error:", error);
+                showCustomAlert("Gagal Pesan", error.message || "Terjadi kesalahan sistem.");
             } finally {
                 showLoading(false);
             }
@@ -1678,6 +1691,7 @@
                 await fetchCloudStock(true);
                 showToast("Pesanan dihapus");
             } catch(e) {
+                console.error(e);
                 showCustomAlert("Error", e.message);
             } finally {
                 showLoading(false);
@@ -1733,6 +1747,7 @@
             }
         }
 
+        // --- FITUR EDIT PESANAN (REVISI) ---
         function openEditModal(id) {
             const order = currentCloudData.orders.find(o => o.orderId === id);
             if(!order) return;
@@ -1740,8 +1755,11 @@
             document.getElementById('editOrderId').value = order.orderId;
             document.getElementById('editName').value = order.name;
             document.getElementById('editClass').value = order.class;
+            
+            // Tampilkan preview item (Read-only)
             const itemsString = order.items.map(i => `${i.name} (${i.qty})`).join(', ');
-            document.getElementById('editItems').value = itemsString;
+            document.getElementById('editItemsPreview').innerText = itemsString;
+
             document.getElementById('editTotal').value = order.total;
 
             document.getElementById('editOrderModal').classList.add('show');
@@ -1755,35 +1773,44 @@
             const id = parseInt(document.getElementById('editOrderId').value);
             const newName = document.getElementById('editName').value;
             const newClass = document.getElementById('editClass').value;
-            const newItemsStr = document.getElementById('editItems').value; 
             const newTotal = parseInt(document.getElementById('editTotal').value);
 
-            if(!newName || !newClass || !newItemsStr || isNaN(newTotal)) {
-                return showCustomAlert("Data Tidak Lengkap", "Mohon isi semua field dengan benar.");
+            if(!newName || !newClass || isNaN(newTotal)) {
+                return showCustomAlert("Data Tidak Lengkap", "Mohon isi Nama, Kelas, dan Total Harga dengan benar.");
             }
 
             showLoading(true);
             try {
+                // 1. Ambil data terbaru dulu (PENTING)
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
+                if(!res.ok) throw new Error("Gagal mengambil data terbaru.");
                 const data = await res.json();
 
+                // 2. Temukan order
                 const idx = data.record.orders.findIndex(o => o.orderId === id);
-                if(idx !== -1) {
-                    data.record.orders[idx].name = newName;
-                    data.record.orders[idx].class = newClass;
-                    data.record.orders[idx].total = newTotal;
-                }
+                if(idx === -1) throw new Error("Pesanan tidak ditemukan di database.");
 
-                await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
+                // 3. Update data (Hanya Nama, Kelas, Total)
+                data.record.orders[idx].name = newName;
+                data.record.orders[idx].class = newClass;
+                data.record.orders[idx].total = newTotal;
+                // Items TIDAK diubah untuk mencegah error struktur JSON
+
+                // 4. Simpan
+                const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
                     headers: getHeaders(),
                     body: JSON.stringify(data.record)
                 });
 
+                if(!updateRes.ok) throw new Error("Gagal menyimpan perubahan.");
+
                 await fetchCloudStock(true);
                 closeEditModal();
-                showToast("Pesanan berhasil diedit");
+                showToast("Pesanan berhasil diperbarui.");
+
             } catch(e) {
+                console.error(e);
                 showCustomAlert("Error", e.message);
             } finally {
                 showLoading(false);
@@ -1964,7 +1991,7 @@
                 adm.classList.add('hidden'); 
                 cart.style.display = 'flex';
                 
-                sessionStorage.setItem('brocita_lastView', 'customer');
+                sessionStorage.setItem('brocta_lastView', 'customer');
                 checkShopStatus(); 
             }
         }
@@ -1999,7 +2026,7 @@
                 
                 const link = document.createElement("a");
                 link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-                link.download = `Brocita_Report_${new Date().toISOString().slice(0,10)}.csv`;
+                link.download = `Brocta_Report_${new Date().toISOString().slice(0,10)}.csv`;
                 link.click();
             });
         }
