@@ -764,9 +764,9 @@
         </nav>
     </header>
 
-    <!-- Banner Hari Tutup (Mode Libur Manual) -->
+    <!-- Banner Hari Tutup (Mode tutup Manual) -->
     <div id="closedDayBanner">
-        <i class="fas fa-store-slash"></i> <span id="bannerText">MA'AF, BROCITA SEDANG LIBUR.</span>
+        <i class="fas fa-store-slash"></i> <span id="bannerText">MA'AF, BROCITA SEDANG tutup.</span>
     </div>
 
     <!-- === VIEW PELANGGAN === -->
@@ -896,10 +896,10 @@
                 </div>
             </div>
 
-            <!-- HOLIDAY CONTROL (Mode Libur Manual) -->
+            <!-- HOLIDAY CONTROL (Mode tutup Manual) -->
             <div class="holiday-control-panel">
                 <div>
-                    <h4 style="margin:0 0 5px 0; color:var(--text-dark);"><i class="fas fa-calendar-times"></i> Mode Libur</h4>
+                    <h4 style="margin:0 0 5px 0; color:var(--text-dark);"><i class="fas fa-calendar-times"></i> Mode tutup</h4>
                     <small style="color:var(--text-light);">Aktifkan untuk menutup toko.</small>
                 </div>
                 <label class="switch">
@@ -1196,7 +1196,7 @@
                     });
                 }
 
-                // CEK STATUS LIBUR (HANYA MANUAL)
+                // CEK STATUS tutup (HANYA MANUAL)
                 checkShopStatus();
 
                 if(!document.getElementById('adminView').classList.contains('hidden')) {
@@ -1233,7 +1233,7 @@
         }
 
         // ==========================================
-        // LOGIKA LIBUR (MANUAL SAJA - RABU DIHAPUS)
+        // LOGIKA tutup (MANUAL SAJA - RABU DIHAPUS)
         // ==========================================
         function checkShopStatus() {
             const banner = document.getElementById('closedDayBanner');
@@ -1245,10 +1245,10 @@
             let reason = "";
             let isClosed = false;
 
-            // HANYA CEK: Mode Libur Manual (Hari Rabu SUDAH DIHAPUS)
+            // HANYA CEK: Mode tutup Manual (Hari Rabu SUDAH DIHAPUS)
             if (currentCloudData.isHoliday === true) {
                 isClosed = true;
-                reason = "BROCITA SEDANG LIBUR.";
+                reason = "BROCITA SEDANG tutup.";
             }
 
             // Update Global State
@@ -1283,18 +1283,18 @@
             }
         }
 
-        // Fungsi untuk Admin mengubah status libur
+        // Fungsi untuk Admin mengubah status tutup
         async function toggleHolidayMode(checkbox) {
             // WAJIB ONLINE
             if(!isOnline) {
-                showCustomAlert("Koneksi Diperlukan", "Anda harus Online untuk mengubah status libur.");
+                showCustomAlert("Koneksi Diperlukan", "Anda harus Online untuk mengubah status tutup.");
                 // Kembalikan posisi switch visual agar sinkron
                 checkbox.checked = currentCloudData.isHoliday;
                 return;
             }
 
-            const isHoliday = checkbox.checked; // true = libur, false = buka
-            const msg = isHoliday ? "Mengaktifkan mode libur..." : "Menonaktifkan mode libur...";
+            const isHoliday = checkbox.checked; // true = tutup, false = buka
+            const msg = isHoliday ? "Mengaktifkan mode tutup..." : "Menonaktifkan mode tutup...";
             
             toggleLoadingOverlay(true);
             try {
@@ -1316,11 +1316,11 @@
                 currentCloudData.isHoliday = isHoliday;
                 checkShopStatus(); // Langsung terapkan efek
                 
-                showToast(isHoliday ? "Mode Libur Diaktifkan" : "Toko Dibuka");
+                showToast(isHoliday ? "Mode tutup Diaktifkan" : "Toko Dibuka");
 
             } catch (e) {
                 console.error(e);
-                showCustomAlert("Gagal", "Gagal mengubah status libur.");
+                showCustomAlert("Gagal", "Gagal mengubah status tutup.");
                 // Kembalikan posisi switch jika gagal
                 checkbox.checked = !isHoliday; 
             } finally {
@@ -1365,9 +1365,9 @@
                 return showCustomAlert("Perlu Koneksi Internet", "Maaf, Anda harus Online untuk memesan demi sinkronisasi stok real-time.");
             }
 
-            // CEK 2: Status Toko (Libur)
+            // CEK 2: Status Toko (tutup)
             if(!isShopOpen) {
-                return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode Libur).");
+                return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
             }
 
             // CEK 3: Keranjang
@@ -1936,7 +1936,7 @@
         function addToCart(event, id) {
             // Cek Status Toko
             if(!isShopOpen) {
-                return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode Libur).");
+                return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
             }
 
             const p = products.find(x => x.id === id);
@@ -1993,7 +1993,7 @@
         function toggleCart() {
             // Cek Status Toko sebelum buka keranjang
             if(!isShopOpen) {
-                showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode Libur).");
+                showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
                 return;
             }
             document.getElementById('cartSidebar').classList.toggle('open');
@@ -2138,7 +2138,7 @@
             if(status) {
                 dot.className = 'status-dot online';
                 
-                // Jika Online, ikuti status Toko (Libur/Buka)
+                // Jika Online, ikuti status Toko (tutup/Buka)
                 btnCheckout.disabled = !isShopOpen; 
                 if(!isShopOpen) {
                     btnCheckout.classList.remove('btn-primary');
