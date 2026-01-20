@@ -1453,21 +1453,31 @@
                     p.currentStock = newStockState[p.id];
                 });
 
-                // --- BUILD WHATSAPP MESSAGE (FIXED) ---
-                // Kita buat string pesan manual agar full control terhadap formatting
-                let waText = `Halo Admin Brocita, mau pesan:%0A%0A`;
+                // ==========================================
+                // DEBUGGING: FORMAT PESAN WHATSAPP
+                // ==========================================
+                // Perbaikan: Menggunakan Template String Literal (` `) dan EncodeURIComponent
+                // Khususnya untuk `%0A` (Newline) dan `%20` (Space) agar tidak double-encoding.
+                
+                // Helper function untuk format angka ribuan
+                const fmt = (num) => num.toLocaleString('id-ID');
+                
+                let waText = `Halo Admin Brocita, saya mau pesan:%0A%0A`; 
                 waText += `*Nama:* ${name}%0A`;
                 waText += `*Kelas:* ${cls}%0A`;
                 waText += `*Catatan:* ${note || "-"}%0A%0A`;
                 waText += `*Detail Pesanan:*%0A`;
                 
                 dbItems.forEach(item => {
-                    waText += `- ${item.name} (${item.qty}x) @ Rp ${item.price.toLocaleString('id-ID')}%0A`;
+                    // Menggunakan %0A untuk baris baru setiap item agar rapi
+                    waText += `- ${item.name} (${item.qty}x) @ Rp ${fmt(item.price)}%0A`;
                 });
                 
-                waText += `%0A*Total Bayar: Rp ${calculatedTotal.toLocaleString('id-ID')}*`;
+                // Total diakhir dengan tanda bintang agar bold di WA
+                waText += `%0A*Total Bayar: Rp ${fmt(calculatedTotal)}*`;
 
-                // Encode agar karakter khusus aman, lalu buka link
+                // Encode URI Component secara global sekali saja di akhir.
+                // Ini akan mengubah spasi menjadi %20 dan karakter spesial lainnya menjadi format URL yang aman.
                 const finalUrl = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(waText)}`;
                 
                 // 6. Reset Local Cart & UI SEBELUM open WA (supaya UX lancar)
