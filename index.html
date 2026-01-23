@@ -764,7 +764,7 @@
         </nav>
     </header>
 
-    <!-- Banner Hari Tutup (Mode tutup Manual) -->
+    <!-- Banner Hari Tutup (Mode tutup manual) -->
     <div id="closedDayBanner">
         <i class="fas fa-store-slash"></i> <span id="bannerText">MA'AF, BROCITA SEDANG TUTUP.</span>
     </div>
@@ -887,7 +887,7 @@
             <div class="admin-header-controls">
                 <div>
                     <h2 style="margin:0; color:var(--text-dark);"><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
-                    <p style="margin:5px 0 0; color:var(--text-light); font-size:0.9rem;">Reset & Kontrol Penuh</p>
+                    <p style="margin:5px 0 0; color:var(--text-light); font-size:0.9rem;">Full Manual Control</p>
                 </div>
                 <div style="display:flex; gap:10px;">
                     <!-- Tombol Refresh ini sudah diperbaiki -->
@@ -937,7 +937,7 @@
             <div style="background:white; padding:20px; border-radius:12px; box-shadow:var(--shadow-sm); margin-bottom:30px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                     <h3 style="color:var(--text-dark);"><i class="fas fa-boxes"></i> Kontrol Stok</h3>
-                    <!-- Tombol Reset Manual -->
+                    <!-- Tombol Reset Manual: HANYA RESET STOK, JANGAN HAPUS PESANAN -->
                     <button onclick="resetDailyStockManual()" class="btn btn-danger btn-sm"><i class="fas fa-redo"></i> Reset Stok Harian</button>
                 </div>
                 <div class="stock-control-grid" id="adminStockGrid">
@@ -951,7 +951,8 @@
                     <h3 style="color:var(--text-dark);"><i class="fas fa-clipboard-list"></i> Data Pesanan</h3>
                     <div style="display:flex; gap:10px;">
                         <button onclick="downloadCSV()" class="btn btn-success btn-sm"><i class="fas fa-file-csv"></i> CSV</button>
-                        <button onclick="resetOrdersData()" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus Semua</button>
+                        <!-- Tombol Hapus Semua Pesanan: Khusus Hapus History Saja -->
+                        <button onclick="resetOrdersData()" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus Semua Pesanan</button>
                     </div>
                 </div>
 
@@ -1187,7 +1188,7 @@
 
                 setOnlineStatus(true);
 
-                // --- MODE MANUAL: TIDAK ADA RESET OTOMATIS BERDASARKAN TANGGAL ---
+                // --- FULL MANUAL MODE: TIDAK ADA RESET OTOMATIS ---
                 
                 // UPDATE STOK LOKAL
                 if(db.stock) {
@@ -1245,7 +1246,7 @@
             let reason = "";
             let isClosed = false;
 
-            // HANYA CEK: Mode tutup Manual (Hari Rabu SUDAH DIHAPUS)
+            // HANYA CEK: Mode tutup Manual
             if (currentCloudData.isHoliday === true) {
                 isClosed = true;
                 reason = "BROCITA SEDANG TUTUP.";
@@ -1454,14 +1455,11 @@
                 });
 
                 // ==========================================
-                // DEBUGGING: FORMAT PESAN WHATSAPP
+                // PERBAIKAN: FORMAT PESAN WHATSAPP
                 // ==========================================
-                // Perbaikan: Menggunakan Template String Literal (` `) dan EncodeURIComponent
-                // Khususnya untuk `%0A` (Newline) dan `%20` (Space) agar tidak double-encoding.
-                
-                // Helper function untuk format angka ribuan
                 const fmt = (num) => num.toLocaleString('id-ID');
                 
+                // Memformat pesan manual agar rapi
                 let waText = `Halo Admin Brocita, saya mau pesan:%0A%0A`; 
                 waText += `*Nama:* ${name}%0A`;
                 waText += `*Kelas:* ${cls}%0A`;
@@ -1469,16 +1467,14 @@
                 waText += `*Detail Pesanan:*%0A`;
                 
                 dbItems.forEach(item => {
-                    // Menggunakan %0A untuk baris baru setiap item agar rapi
+                    // Format: - Item (Qty) @ Harga
                     waText += `- ${item.name} (${item.qty}x) @ Rp ${fmt(item.price)}%0A`;
                 });
                 
-                // Total diakhir dengan tanda bintang agar bold di WA
+                // Total Akhir
                 waText += `%0A*Total Bayar: Rp ${fmt(calculatedTotal)}*`;
 
-                // Encode URI Component secara global sekali saja di akhir.
-                // Ini akan mengubah spasi menjadi %20 dan karakter spesial lainnya menjadi format URL yang aman.
-                const finalUrl = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(waText)}`;
+                const finalUrl = `https://wa.me/${ADMIN_WA}?text=${waText}`;
                 
                 // 6. Reset Local Cart & UI SEBELUM open WA (supaya UX lancar)
                 cart = [];
@@ -1499,21 +1495,24 @@
             }
         }
 
-        // Fungsi Reset Manual (Admin)
+        // ==========================================
+        // PERBAIKAN RESET MANUAL: HANYA STOK
+        // ==========================================
         async function resetDailyStockManual() {
-            if(!confirm("Reset semua stok ke " + DAILY_LIMIT + "? Ini akan menghapus pesanan lama.")) return;
+            // Konfirmasi
+            if(!confirm("PERHATIAN: Tombol ini akan mereset STOK PRODUK menjadi " + DAILY_LIMIT + ". Data PESANAN (History) akan DIPERTAHANKAN.")) return;
+            
             toggleLoadingOverlay(true);
             try {
-                // Ambil data terbaru dulu agar tidak menimpa data baru
+                // 1. Ambil data terbaru dulu agar tidak menimpa data baru
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
                 const data = await res.json();
                 
                 const resetStock = {};
                 products.forEach(p => resetStock[p.id] = DAILY_LIMIT);
                 
-                // Update stok & kosongkan pesanan
+                // 2. Update stok SAJA. JANGAN sentuh orders.
                 data.record.stock = resetStock;
-                data.record.orders = []; // Manual reset = reset everything
 
                 await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
@@ -1522,7 +1521,8 @@
                 });
 
                 await fetchCloudStock(true);
-                showToast("Sistem berhasil di-reset (Manual Mode).");
+                showToast("Stok berhasil di-reset. Pesanan aman.");
+
             } catch(e) {
                 showCustomAlert("Error", e.message);
             } finally {
@@ -1530,6 +1530,7 @@
             }
         }
 
+        // Fungsi Hapus Pesanan Terpisah (Jika ingin reset history manual)
         async function resetOrdersData() {
             if(!confirm("PERINGATAN: Apakah Anda yakin ingin menghapus SEMUA data pesanan menjadi kosong (0)? Data tidak bisa dikembalikan.")) return;
             
@@ -1539,7 +1540,8 @@
                 if(!res.ok) throw new Error("Gagal mengambil data saat ini.");
                 
                 const currentDB = await res.json();
-                currentDB.record.orders = []; 
+                currentDB.record.orders = []; // Hapus History
+                // Jangan lupa hitung ulang statistik jika perlu, tapi di sini cukup dikosongkan
 
                 const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
