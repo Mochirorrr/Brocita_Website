@@ -616,8 +616,7 @@
             display: flex;
             justify-content: center;
             gap: 8px;
-            /* Update layout agar tombol hapus muat */
-            flex-wrap: wrap; 
+            flex-wrap: wrap;
         }
 
         .stock-btn-circle {
@@ -638,7 +637,7 @@
         .btn-plus-circle { background-color: #27ae60; }
         .btn-minus-circle { background-color: #e74c3c; }
         
-        /* New Button Style for Delete Stock */
+        /* Button Clear Stock */
         .btn-clear-circle {
             width: 32px;
             height: 32px;
@@ -651,7 +650,7 @@
             justify-content: center;
             transition: transform 0.2s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            background-color: #c0392b; /* Dark Red */
+            background-color: #c0392b;
         }
         .btn-clear-circle:hover { background-color: #a93226; }
 
@@ -763,7 +762,7 @@
                 <span id="connStatus" class="status-dot"></span>
             </div>
             
-            <!-- Nav Links: Murni untuk Customer. Tidak ada link dashboard di sini -->
+            <!-- Nav Links -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" class="nav-link" onclick="navigateToCustomer()">Beranda</a></li>
                 <li><a href="#products" class="nav-link" onclick="navigateToCustomer()">Menu</a></li>
@@ -783,7 +782,7 @@
         </nav>
     </header>
 
-    <!-- Banner Hari Tutup (Mode tutup manual) -->
+    <!-- Banner Hari Tutup -->
     <div id="closedDayBanner">
         <i class="fas fa-store-slash"></i> <span id="bannerText">MA'AF, BROCITA SEDANG TUTUP.</span>
     </div>
@@ -803,7 +802,6 @@
                     </div>
                 </div>
                 <div class="hero-image">
-                    <!-- Gunakan placeholder jika gambar lokal tidak ada -->
                     <img src="Logo.png" alt="Tahu Goreng Brocita" onerror="this.src='https://picsum.photos/seed/tofu1/600/600'">
                 </div>
             </div>
@@ -816,14 +814,13 @@
                     <h2>Menu <span>Populer</span></h2>
                     <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-top:10px;">
                         <p style="color:var(--text-light)">Refresh</p>
-                        <!-- Tombol refresh manual untuk user -->
                         <button onclick="fetchCloudStock(true)" style="background:none; border:none; color:var(--primary-color); cursor:pointer; font-size:1.2rem;" title="Refresh Stok">
                             <i class="fas fa-sync-alt" id="refreshIcon"></i>
                         </button>
                     </div>
                 </div>
                 <div class="product-grid" id="productGrid">
-                    <!-- JS will render products here -->
+                    <!-- JS Render Here -->
                     <div style="grid-column: 1/-1; text-align:center; padding: 50px;">
                         <i class="fas fa-spinner fa-spin" style="font-size:2rem; color:var(--primary-color);"></i>
                         <p style="margin-top:10px;">Mengambil data stok terbaru...</p>
@@ -881,7 +878,8 @@
             <div class="container">
                 <div class="footer-grid">
                     <div data-aos="fade-right">
-                        <3 style="color:var(--primary-color); margin-bottom:15px; font-family:'Fredoka'; font-size:1.5rem;">Brocita</h3>
+                        <!-- FIXED: Changed </3> to </h3> -->
+                        <h3 style="color:var(--primary-color); margin-bottom:15px; font-family:'Fredoka'; font-size:1.5rem;">Brocita</h3>
                         <p style="color:#ccc; font-size:0.9rem; line-height:1.8;">Menyajikan olahan tahu terbaik dengan bahan berkualitas dan cinta khas masakan rumahan. Renyah di luar, lembut di dalam.</p>
                     </div>
                     <div data-aos="fade-left">
@@ -899,7 +897,7 @@
         </footer>
     </main>
 
-    <!-- === VIEW ADMIN (DATABASE) === -->
+    <!-- === VIEW ADMIN === -->
     <main id="adminView" class="hidden">
         <section class="container">
             
@@ -909,13 +907,12 @@
                     <p style="margin:5px 0 0; color:var(--text-light); font-size:0.9rem;">Full Manual Control</p>
                 </div>
                 <div style="display:flex; gap:10px;">
-                    <!-- Tombol Refresh ini sudah diperbaiki -->
                     <button id="btnAdminRefresh" onclick="handleAdminRefresh()" class="btn btn-secondary btn-sm"><i class="fas fa-sync"></i> Refresh Data</button>
                     <button onclick="switchView('customer')" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Ke Toko</button>
                 </div>
             </div>
 
-            <!-- HOLIDAY CONTROL (Mode tutup Manual) -->
+            <!-- HOLIDAY CONTROL -->
             <div class="holiday-control-panel">
                 <div>
                     <h4 style="margin:0 0 5px 0; color:var(--text-dark);"><i class="fas fa-calendar-times"></i> Mode tutup</h4>
@@ -927,7 +924,7 @@
                 </label>
             </div>
 
-            <!-- ROW 1: GENERAL STATS -->
+            <!-- ROW 1: STATS -->
             <div class="dashboard-stats-row-1">
                 <div class="stat-card">
                     <h5>Total Pesanan</h5>
@@ -939,38 +936,36 @@
                 </div>
             </div>
 
-            <!-- ROW 2: PRODUCT SUMMARY -->
+            <!-- ROW 2: SUMMARY -->
             <div class="dashboard-stats-row-2">
                 <div class="row-header">
                     <i class="fas fa-chart-pie" style="color:var(--primary-color);"></i> Terjual Produk (Unit)
                 </div>
                 <div class="product-summary-grid" id="productSummaryGrid">
-                    <!-- JS will render summary cards here -->
+                    <!-- JS Render -->
                     <div style="grid-column: 1/-1; text-align:center; padding: 20px; color:#999;">
                         <i class="fas fa-spinner fa-spin"></i> Menghitung...
                     </div>
                 </div>
             </div>
 
-            <!-- Stok Management Section -->
+            <!-- Stok Management -->
             <div style="background:white; padding:20px; border-radius:12px; box-shadow:var(--shadow-sm); margin-bottom:30px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                     <h3 style="color:var(--text-dark);"><i class="fas fa-boxes"></i> Kontrol Stok</h3>
-                    <!-- Tombol Reset Manual: HANYA RESET STOK, JANGAN HAPUS PESANAN -->
                     <button onclick="resetDailyStockManual()" class="btn btn-danger btn-sm"><i class="fas fa-redo"></i> Reset Stok Harian</button>
                 </div>
                 <div class="stock-control-grid" id="adminStockGrid">
-                    <!-- JS Render Stok Disini -->
+                    <!-- JS Render -->
                 </div>
             </div>
 
-            <!-- Orders Table Section -->
+            <!-- Orders Table -->
             <div style="background:white; padding:20px; border-radius:12px; box-shadow:var(--shadow-sm);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
                     <h3 style="color:var(--text-dark);"><i class="fas fa-clipboard-list"></i> Data Pesanan</h3>
                     <div style="display:flex; gap:10px;">
                         <button onclick="downloadCSV()" class="btn btn-success btn-sm"><i class="fas fa-file-csv"></i> CSV</button>
-                        <!-- Tombol Hapus Semua Pesanan: Khusus Hapus History Saja -->
                         <button onclick="resetOrdersData()" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Hapus Semua Pesanan</button>
                     </div>
                 </div>
@@ -1017,7 +1012,6 @@
         <div class="cart-footer">
             <div class="total-price"><span>Total:</span><span id="cartTotal">Rp 0</span></div>
             
-            <!-- Online Warning -->
             <div id="offlineMsg" style="display:none; background:#fff3cd; color:#856404; padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.9rem; text-align:center; border:1px solid #ffeeba;">
                 <i class="fas fa-wifi"></i> Perlu koneksi internet untuk pesan.
             </div>
@@ -1219,6 +1213,7 @@
                 // CEK STATUS tutup (HANYA MANUAL)
                 checkShopStatus();
 
+                // RENDER DATA BERDASARKAN YANG AKTIF
                 if(!document.getElementById('adminView').classList.contains('hidden')) {
                     renderAdminStats(); 
                     renderAdminStockControls();
@@ -1244,7 +1239,7 @@
                         <button onclick="fetchCloudStock(true)" class="btn btn-primary" style="margin-top:20px;">Coba Lagi</button>
                     </div>`;
             } finally {
-                // PASTIKAN LOADING SELALU DIMATIKAN DI BAGIAN INI (FIX INFINITE LOOP)
+                // PASTIKAN LOADING SELALU DIMATIKAN DI BAGIAN INI
                 toggleLoadingOverlay(false);
                 
                 const icon = document.getElementById('refreshIcon');
@@ -1253,7 +1248,7 @@
         }
 
         // ==========================================
-        // LOGIKA tutup (MANUAL SAJA - RABU DIHAPUS)
+        // LOGIKA tutup (MANUAL SAJA)
         // ==========================================
         function checkShopStatus() {
             const banner = document.getElementById('closedDayBanner');
@@ -1305,43 +1300,37 @@
 
         // Fungsi untuk Admin mengubah status tutup
         async function toggleHolidayMode(checkbox) {
-            // WAJIB ONLINE
             if(!isOnline) {
                 showCustomAlert("Koneksi Diperlukan", "Anda harus Online untuk mengubah status tutup.");
-                // Kembalikan posisi switch visual agar sinkron
                 checkbox.checked = currentCloudData.isHoliday;
                 return;
             }
 
-            const isHoliday = checkbox.checked; // true = tutup, false = buka
+            const isHoliday = checkbox.checked;
             const msg = isHoliday ? "Mengaktifkan mode tutup..." : "Menonaktifkan mode tutup...";
             
             toggleLoadingOverlay(true);
             try {
-                // Fetch data terbaru dulu (avoid overwrite)
+                // Fetch data terbaru dulu
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
                 const db = await res.json();
 
-                // Update field isHoliday
                 db.record.isHoliday = isHoliday;
 
-                // Simpan
                 await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
                     headers: getHeaders(),
                     body: JSON.stringify(db.record)
                 });
 
-                // Refresh local state
                 currentCloudData.isHoliday = isHoliday;
-                checkShopStatus(); // Langsung terapkan efek
+                checkShopStatus();
                 
                 showToast(isHoliday ? "Mode tutup Diaktifkan" : "Toko Dibuka");
 
             } catch (e) {
                 console.error(e);
                 showCustomAlert("Gagal", "Gagal mengubah status tutup.");
-                // Kembalikan posisi switch jika gagal
                 checkbox.checked = !isHoliday; 
             } finally {
                 toggleLoadingOverlay(false);
@@ -1366,9 +1355,9 @@
             
             // Tampilkan indikator loading
             icon.classList.add('fa-spin');
-            btn.disabled = true; // Mencegah double click
+            btn.disabled = true;
             
-            await fetchCloudStock(true); // Tunggu fetch selesai
+            await fetchCloudStock(true);
             
             icon.classList.remove('fa-spin');
             btn.disabled = false;
@@ -1380,22 +1369,12 @@
         // PERBAIKAN BESAR: CHECKOUT WHATSAPP
         // ==========================================
         async function processCheckout() {
-            // CEK 1: Status Internet (WAJIB ONLINE)
-            if(!isOnline) {
-                return showCustomAlert("Perlu Koneksi Internet", "Maaf, Anda harus Online untuk memesan demi sinkronisasi stok real-time.");
-            }
-
-            // CEK 2: Status Toko (tutup)
-            if(!isShopOpen) {
-                return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
-            }
-
-            // CEK 3: Keranjang
+            if(!isOnline) return showCustomAlert("Perlu Koneksi Internet", "Maaf, Anda harus Online untuk memesan.");
+            if(!isShopOpen) return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
             if (cart.length === 0) return showCustomAlert("Ups!", "Keranjang kosong.");
             
-            // CEK 4: Input
-            const name = document.getElementById('customerName').value;
-            const cls = document.getElementById('customerClass').value;
+            const name = document.getElementById('customerName').value.trim();
+            const cls = document.getElementById('customerClass').value.trim();
             const note = document.getElementById('customerNote').value.trim();
 
             if (!name || !cls) return showCustomAlert("Lengkapi Data", "Isi Nama & Kelas dulu.");
@@ -1403,47 +1382,32 @@
             toggleLoadingOverlay(true);
 
             try {
-                // 1. Ambil Data Terbaru dari Database (Untuk cek stok paling akurat)
+                // 1. Ambil Data Terbaru
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
-                if(!res.ok) throw new Error("Gagal mengunci data stok. Coba lagi.");
+                if(!res.ok) throw new Error("Gagal mengunci data stok.");
                 const currentDB = await res.json();
 
                 let newStockState = { ...currentDB.record.stock };
                 let calculatedTotal = 0;
                 const dbItems = [];
 
-                // 2. Validasi Stok & Siapkan Array Item
+                // 2. Validasi Stok
                 for (let item of cart) {
                     const currentStockInDB = newStockState[item.id] || 0;
-                    
                     if (currentStockInDB < item.qty) {
-                        throw new Error(`Stok ${item.name} tidak mencukupi. Sisa stok: ${currentStockInDB}.`);
+                        throw new Error(`Stok ${item.name} tidak mencukupi. Sisa: ${currentStockInDB}.`);
                     }
                     
-                    // Kurangi stok
                     newStockState[item.id] = currentStockInDB - item.qty;
-                    
-                    // Hitung subtotal
                     const sub = item.price * item.qty;
                     calculatedTotal += sub;
-
-                    // Push ke array DB
-                    dbItems.push({
-                        id: item.id,
-                        name: item.name,
-                        qty: item.qty,
-                        price: item.price,
-                        subTotal: sub
-                    });
+                    dbItems.push({ id: item.id, name: item.name, qty: item.qty, price: item.price, subTotal: sub });
                 }
 
-                // Pastikan calculatedTotal valid
                 if (isNaN(calculatedTotal)) calculatedTotal = 0;
-
-                // Sort items berdasarkan ID Produk
                 dbItems.sort((a, b) => a.id - b.id);
 
-                // 3. Buat Objek Pesanan Baru
+                // 3. Buat Objek Pesanan
                 const newOrder = {
                     orderId: Date.now(),
                     date: new Date().toLocaleString('id-ID'),
@@ -1465,49 +1429,28 @@
                     body: JSON.stringify(currentDB.record)
                 });
 
-                // Cek apakah update berhasil
-                if(!updateRes.ok) throw new Error("Gagal menyimpan pesanan ke database. Koneksi mungkin terputus.");
+                if(!updateRes.ok) throw new Error("Gagal menyimpan pesanan.");
 
-                // 5. Jika Sukses: Update UI Lokal & Kirim WA
-                products.forEach(p => {
-                    p.currentStock = newStockState[p.id];
-                });
-
-                // ==========================================
-                // PERBAIKAN: FORMAT PESAN WHATSAPP
-                // ==========================================
+                // 5. Update UI Lokal & WA
+                products.forEach(p => { p.currentStock = newStockState[p.id]; });
+                
                 const fmt = (num) => num.toLocaleString('id-ID');
-                
-                // Memformat pesan manual agar rapi
                 let waText = `Halo Admin Brocita, saya mau pesan:%0A%0A`; 
-                waText += `*Nama:* ${name}%0A`;
-                waText += `*Kelas:* ${cls}%0A`;
-                waText += `*Catatan:* ${note || "-"}%0A%0A`;
-                waText += `*Detail Pesanan:*%0A`;
-                
+                waText += `*Nama:* ${name}%0A*Kelas:* ${cls}%0A*Catatan:* ${note || "-"}%0A%0A*Detail Pesanan:*%0A`;
                 dbItems.forEach(item => {
-                    // Format: - Item (Qty) @ Harga
                     waText += `- ${item.name} (${item.qty}x) @ Rp ${fmt(item.price)}%0A`;
                 });
-                
-                // Total Akhir
                 waText += `%0A*Total Bayar: Rp ${fmt(calculatedTotal)}*`;
 
-                const finalUrl = `https://wa.me/${ADMIN_WA}?text=${waText}`;
-                
-                // 6. Reset Local Cart & UI SEBELUM open WA (supaya UX lancar)
                 cart = [];
                 updateCartUI();
                 toggleCart();
-                renderProducts(); // Refresh tampilan stok di layar menu
-
-                // 7. Buka WhatsApp di tab baru
-                window.open(finalUrl, '_blank');
-                
-                showToast("Pesanan Berhasil! Mengalihkan ke WhatsApp...");
+                renderProducts();
+                window.open(`https://wa.me/${ADMIN_WA}?text=${waText}`, '_blank');
+                showToast("Pesanan Berhasil!");
 
             } catch (error) {
-                console.error("Checkout Error:", error);
+                console.error(error);
                 showCustomAlert("Gagal Pesan", error.message || "Terjadi kesalahan sistem.");
             } finally {
                 toggleLoadingOverlay(false);
@@ -1515,22 +1458,19 @@
         }
 
         // ==========================================
-        // PERBAIKAN RESET MANUAL: HANYA STOK
+        // RESET MANUAL
         // ==========================================
         async function resetDailyStockManual() {
-            // Konfirmasi
-            if(!confirm("PERHATIAN: Tombol ini akan mereset STOK PRODUK menjadi " + DAILY_LIMIT + ". Data PESANAN (History) akan DIPERTAHANKAN.")) return;
+            if(!confirm("PERHATIAN: Tombol ini akan mereset STOK PRODUK menjadi " + DAILY_LIMIT + ". Data PESANAN akan DIPERTAHANKAN.")) return;
             
             toggleLoadingOverlay(true);
             try {
-                // 1. Ambil data terbaru dulu agar tidak menimpa data baru
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
                 const data = await res.json();
                 
                 const resetStock = {};
                 products.forEach(p => resetStock[p.id] = DAILY_LIMIT);
                 
-                // 2. Update stok SAJA. JANGAN sentuh orders.
                 data.record.stock = resetStock;
 
                 await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
@@ -1540,7 +1480,7 @@
                 });
 
                 await fetchCloudStock(true);
-                showToast("Stok berhasil di-reset. Pesanan aman.");
+                showToast("Stok berhasil di-reset.");
 
             } catch(e) {
                 showCustomAlert("Error", e.message);
@@ -1549,18 +1489,16 @@
             }
         }
 
-        // Fungsi Hapus Pesanan Terpisah (Jika ingin reset history manual)
         async function resetOrdersData() {
-            if(!confirm("PERINGATAN: Apakah Anda yakin ingin menghapus SEMUA data pesanan menjadi kosong (0)? Data tidak bisa dikembalikan.")) return;
+            if(!confirm("PERINGATAN: Hapus SEMUA data pesanan?")) return;
             
             toggleLoadingOverlay(true);
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
-                if(!res.ok) throw new Error("Gagal mengambil data saat ini.");
+                if(!res.ok) throw new Error("Gagal mengambil data.");
                 
                 const currentDB = await res.json();
-                currentDB.record.orders = []; // Hapus History
-                // Jangan lupa hitung ulang statistik jika perlu, tapi di sini cukup dikosongkan
+                currentDB.record.orders = []; 
 
                 const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
@@ -1568,13 +1506,12 @@
                     body: JSON.stringify(currentDB.record)
                 });
 
-                if(!updateRes.ok) throw new Error("Gagal mereset data pesanan.");
+                if(!updateRes.ok) throw new Error("Gagal mereset data.");
 
                 await fetchCloudStock(true);
-                showToast("Data pesanan berhasil dikosongkan (Reset 0).");
+                showToast("Data pesanan dihapus.");
 
             } catch (e) {
-                console.error(e);
                 showCustomAlert("Error", e.message);
             } finally {
                 toggleLoadingOverlay(false);
@@ -1590,33 +1527,23 @@
             
             const orders = currentCloudData.orders;
             
-            // Update General Stats
             document.getElementById('totalOrdersCount').innerText = orders.length;
             const revenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
             document.getElementById('totalRevenue').innerText = 'Rp ' + revenue.toLocaleString('id-ID');
 
-            // Calculate Product Summary
             const productSales = {};
-            
-            // Initialize
             products.forEach(p => productSales[p.id] = 0);
 
-            // Sum up quantities from all orders
             orders.forEach(order => {
                 if(order.items) {
                     order.items.forEach(item => {
-                        if(productSales[item.id] !== undefined) {
-                            productSales[item.id] += item.qty;
-                        }
+                        if(productSales[item.id] !== undefined) productSales[item.id] += item.qty;
                     });
                 }
             });
 
-            // Render Summary Cards
             const summaryGrid = document.getElementById('productSummaryGrid');
             summaryGrid.innerHTML = '';
-
-            // Find max value for progress bar scaling
             const maxVal = Math.max(...Object.values(productSales));
 
             products.forEach(p => {
@@ -1646,7 +1573,6 @@
                 
                 const card = document.createElement('div');
                 card.className = 'stock-item-card';
-                // HTML Update: Added Button to Clear Stock
                 card.innerHTML = `
                     <img src="${p.img}" class="stock-item-img" onerror="this.src='https://picsum.photos/seed/${p.id}/100'">
                     <div class="stock-item-name">${p.name}</div>
@@ -1689,12 +1615,10 @@
             }
         }
 
-        // NEW FUNCTION: Clear Stock to Zero
         async function clearAdminStock(id) {
             if(!currentCloudData) return;
-            if(!confirm("Apakah Anda yakin ingin menghapus stok produk ini menjadi 0?")) return;
+            if(!confirm("Hapus stok produk ini menjadi 0?")) return;
 
-            // Set ke 0
             currentCloudData.stock[id] = 0;
             renderAdminStockControls();
 
@@ -1716,7 +1640,6 @@
             }
         }
 
-        // Render Orders Table
         function renderAdminOrders() {
             const tbody = document.getElementById('ordersTableBody');
             const empty = document.getElementById('emptyState');
@@ -1739,7 +1662,7 @@
             const sortedOrders = orders.slice().sort((a, b) => b.orderId - a.orderId);
 
             sortedOrders.forEach(order => {
-                // 1. Render Header (Baris pertama berisi Info Pelanggan & Summary)
+                // Header Row
                 const headerRow = document.createElement('tr');
                 headerRow.className = 'group-header';
                 headerRow.innerHTML = `
@@ -1756,7 +1679,7 @@
                     `;
                 tbody.appendChild(headerRow);
 
-                // 2. Render Items Detail (Satu baris per produk)
+                // Items Rows
                 const sortedItems = order.items.slice().sort((a, b) => a.id - b.id);
 
                 sortedItems.forEach(item => {
@@ -1779,7 +1702,6 @@
             });
         }
 
-        // Hapus Satu Order
         async function deleteSingleOrder(id) {
             if(!confirm("Hapus pesanan ini beserta item-itemnya?")) return;
             toggleLoadingOverlay(true);
@@ -1804,35 +1726,27 @@
             }
         }
 
-        // Hapus Satu Item
         async function deleteSingleItem(orderId, itemId) {
             const order = currentCloudData.orders.find(o => o.orderId === orderId);
             if(!order) return;
             
-            if(!confirm(`Hapus item "${order.items.find(i=>i.id===itemId).name}" ini saja? Total akan dihitung ulang.`)) return;
+            if(!confirm(`Hapus item "${order.items.find(i=>i.id===itemId).name}" ini saja?`)) return;
 
             toggleLoadingOverlay(true);
             try {
-                // 1. Ambil Data Terbaru
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
                 if(!res.ok) throw new Error("Gagal mengunci data.");
                 const currentDB = await res.json();
 
-                // 2. Temukan Index Order
                 const idx = currentDB.record.orders.findIndex(o => o.orderId === orderId);
                 if(idx === -1) throw new Error("Pesanan tidak ditemukan.");
 
-                // 3. Filter Item (Hapus item yang dipilih)
                 const newItemsList = currentDB.record.orders[idx].items.filter(i => i.id !== itemId);
-
-                // 4. Hitung Ulang Total
                 const newTotal = newItemsList.reduce((sum, item) => sum + (item.qty * item.price), 0);
 
-                // 5. Update Order Object
                 currentDB.record.orders[idx].items = newItemsList;
                 currentDB.record.orders[idx].total = newTotal;
 
-                // 6. Simpan ke Cloud
                 const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
                     headers: getHeaders(),
@@ -1841,9 +1755,8 @@
 
                 if(!updateRes.ok) throw new Error("Gagal update data.");
 
-                // 7. Refresh UI
                 await fetchCloudStock(true);
-                showToast("Item berhasil dihapus. Total dihitung ulang.");
+                showToast("Item berhasil dihapus.");
 
             } catch(e) {
                 console.error(e);
@@ -1853,7 +1766,6 @@
             }
         }
 
-        // --- FITUR EDIT PESANAN (REVISI) ---
         function openEditModal(id) {
             const order = currentCloudData.orders.find(o => o.orderId === id);
             if(!order) return;
@@ -1862,7 +1774,6 @@
             document.getElementById('editName').value = order.name;
             document.getElementById('editClass').value = order.class;
             
-            // Tampilkan preview item (Read-only)
             const itemsString = order.items.map(i => `${i.name} (${i.qty})`).join(', ');
             document.getElementById('editItemsPreview').innerText = itemsString;
 
@@ -1887,22 +1798,17 @@
 
             toggleLoadingOverlay(true);
             try {
-                // 1. Ambil data terbaru dulu (PENTING)
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
                 if(!res.ok) throw new Error("Gagal mengambil data terbaru.");
                 const data = await res.json();
 
-                // 2. Temukan order
                 const idx = data.record.orders.findIndex(o => o.orderId === id);
-                if(idx === -1) throw new Error("Pesanan tidak ditemukan di database.");
+                if(idx === -1) throw new Error("Pesanan tidak ditemukan.");
 
-                // 3. Update data (Hanya Nama, Kelas, Total)
                 data.record.orders[idx].name = newName;
                 data.record.orders[idx].class = newClass;
                 data.record.orders[idx].total = newTotal;
-                // Items TIDAK diubah untuk mencegah error struktur JSON
 
-                // 4. Simpan
                 const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
                     headers: getHeaders(),
@@ -1923,7 +1829,6 @@
             }
         }
 
-
         // ==========================================
         // FUNGSI UI & RENDER (CUSTOMER)
         // ==========================================
@@ -1940,8 +1845,6 @@
                 
                 const isOutOfStock = p.currentStock <= 0;
                 const isLowStock = p.currentStock > 0 && p.currentStock <= 5;
-                
-                // Logika Disabled berdasarkan Status Toko (Buka/Tutup)
                 const isShopClosed = !isShopOpen;
 
                 let btnClass = 'btn-add';
@@ -1994,11 +1897,7 @@
         }
 
         function addToCart(event, id) {
-            // Cek Status Toko
-            if(!isShopOpen) {
-                return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
-            }
-
+            if(!isShopOpen) return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
             const p = products.find(x => x.id === id);
             if(p.currentStock <= 0) return showCustomAlert("Stok Habis", "Maaf, barang ini sudah habis.");
 
@@ -2051,29 +1950,20 @@
         }
 
         function toggleCart() {
-            // Cek Status Toko sebelum buka keranjang
-            if(!isShopOpen) {
-                showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
-                return;
-            }
+            if(!isShopOpen) return showCustomAlert("Toko Tutup", "Maaf, toko sedang tutup (Mode tutup).");
             document.getElementById('cartSidebar').classList.toggle('open');
             document.getElementById('cartOverlay').toggleAttribute('open');
         }
 
         // ==========================================
-        // ADMIN & UTILITIES (UPDATED)
+        // ADMIN & UTILITIES
         // ==========================================
         
-        // Function: Memastikan Login Admin Bertahan saat Refresh
         function checkSessionPersistence() {
             const isAdmin = sessionStorage.getItem('brocita_isAdmin') === 'true';
-            
             if (isAdmin) {
                 const lastView = sessionStorage.getItem('brocita_lastView') || 'customer';
-                
-                if (lastView === 'admin') {
-                    switchView('admin'); 
-                }
+                if (lastView === 'admin') switchView('admin'); 
             }
         }
 
@@ -2089,7 +1979,7 @@
                 cart.style.display = 'none';
                 
                 sessionStorage.setItem('brocita_isAdmin', 'true');
-                sessionStorage.setItem('brocita_lastView', 'admin'); // FIX TYPO
+                sessionStorage.setItem('brocita_lastView', 'admin');
                 
                 loadAdminData();
             } else {
@@ -2097,15 +1987,13 @@
                 adm.classList.add('hidden'); 
                 cart.style.display = 'flex';
                 
-                sessionStorage.setItem('brocita_lastView', 'customer'); // FIX TYPO
+                sessionStorage.setItem('brocita_lastView', 'customer');
                 checkShopStatus(); 
             }
         }
 
-        // Function: Helper untuk navigasi dari Nav Link ke Customer View
         function navigateToCustomer() {
             document.getElementById('navLinks').classList.remove('active');
-            
             if (!document.getElementById('adminView').classList.contains('hidden')) {
                 switchView('customer');
             }
@@ -2137,10 +2025,7 @@
             });
         }
 
-        // Wrapper lama agar fungsi showLoading(show) tetap berjalan
-        function showLoading(show) {
-            toggleLoadingOverlay(show);
-        }
+        function showLoading(show) { toggleLoadingOverlay(show); }
 
         function showToast(msg) {
             const t = document.getElementById("customToast");
@@ -2197,8 +2082,6 @@
 
             if(status) {
                 dot.className = 'status-dot online';
-                
-                // Jika Online, ikuti status Toko (tutup/Buka)
                 btnCheckout.disabled = !isShopOpen; 
                 if(!isShopOpen) {
                     btnCheckout.classList.remove('btn-primary');
@@ -2207,11 +2090,9 @@
                     btnCheckout.classList.remove('btn-secondary');
                     btnCheckout.classList.add('btn-primary');
                 }
-                
                 if(offlineMsg) offlineMsg.style.display = 'none';
             } else {
                 dot.className = 'status-dot.offline';
-                // Jika Offline, WAJIB disable tombol checkout
                 btnCheckout.disabled = true; 
                 btnCheckout.classList.remove('btn-primary');
                 btnCheckout.classList.add('btn-secondary');
@@ -2231,10 +2112,7 @@
         });
 
         // --- INIT ---
-        // 1. Cek session persistence (Login Admin bertahan saat refresh)
         checkSessionPersistence();
-
-        // 2. Fetch Stock (checkShopStatus akan dipanggil di dalam fetchCloudStock)
         fetchCloudStock(true);
 
         // --- NAV LOGIC ---
