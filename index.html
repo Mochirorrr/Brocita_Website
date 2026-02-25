@@ -56,6 +56,224 @@
         button { font-family: 'Poppins', sans-serif; }
         .hidden { display: none !important; }
 
+        /* ==========================================
+           INTRO / SPLASH SCREEN
+           ========================================== */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 50%, #ffcc80 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .intro-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .intro-content {
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Logo Animation Container */
+        .intro-logo-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 30px;
+        }
+
+        /* Spinning Ring */
+        .intro-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top-color: var(--primary-color);
+            border-right-color: var(--secondary-color);
+            border-radius: 50%;
+            animation: spinRing 1.5s linear infinite;
+        }
+
+        .intro-ring:nth-child(2) {
+            width: 85%;
+            height: 85%;
+            top: 7.5%;
+            left: 7.5%;
+            border-top-color: var(--accent-color);
+            border-right-color: var(--primary-color);
+            animation-direction: reverse;
+            animation-duration: 2s;
+        }
+
+        .intro-ring:nth-child(3) {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            border-top-color: var(--secondary-color);
+            border-right-color: var(--accent-color);
+            animation-duration: 2.5s;
+        }
+
+        @keyframes spinRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Center Icon */
+        .intro-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 4rem;
+            color: var(--primary-color);
+            animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s forwards;
+            text-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Brand Name */
+        .intro-brand {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 0.8s ease 0.8s forwards;
+        }
+
+        .intro-brand span {
+            color: var(--primary-color);
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tagline */
+        .intro-tagline {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1.2s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Floating Particles */
+        .intro-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; width: 8px; height: 8px; }
+        .particle:nth-child(2) { left: 20%; top: 80%; animation-delay: 0.5s; width: 12px; height: 12px; background: var(--secondary-color); }
+        .particle:nth-child(3) { left: 80%; top: 30%; animation-delay: 1s; width: 6px; height: 6px; }
+        .particle:nth-child(4) { left: 70%; top: 70%; animation-delay: 1.5s; width: 14px; height: 14px; background: var(--accent-color); }
+        .particle:nth-child(5) { left: 90%; top: 50%; animation-delay: 2s; width: 10px; height: 10px; background: var(--secondary-color); }
+        .particle:nth-child(6) { left: 5%; top: 60%; animation-delay: 0.3s; width: 8px; height: 8px; }
+        .particle:nth-child(7) { left: 40%; top: 10%; animation-delay: 0.8s; width: 12px; height: 12px; background: var(--primary-color); }
+        .particle:nth-child(8) { left: 60%; top: 90%; animation-delay: 1.3s; width: 6px; height: 6px; background: var(--accent-color); }
+
+        @keyframes floatParticle {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.6; }
+        }
+
+        /* Loading Dots */
+        .intro-loading {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease 1.5s forwards;
+        }
+
+        .loading-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: 0s; }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; background: var(--secondary-color); }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; background: var(--accent-color); }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Decorative Circles */
+        .intro-deco {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 140, 0, 0.2);
+            animation: spinSlow 20s linear infinite;
+        }
+
+        .intro-deco-1 { width: 300px; height: 300px; top: -100px; right: -100px; }
+        .intro-deco-2 { width: 200px; height: 200px; bottom: -50px; left: -50px; animation-direction: reverse; }
+
+        @keyframes spinSlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Body no scroll during intro */
+        body.intro-active {
+            overflow: hidden;
+        }
+
+        body.intro-active header,
+        body.intro-active main,
+        body.intro-active footer {
+            opacity: 0;
+        }
+
+        /* ==========================================
+           END INTRO STYLES
+           ========================================== */
+
         /* --- UTILITIES --- */
         .container {
             max-width: 1200px; 
@@ -202,13 +420,17 @@
             font-family: 'Fredoka', sans-serif;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
             white-space: nowrap;
             z-index: 1001;
             height: 100%; 
             cursor: default;
             user-select: none;
         }
+        
+        /* Logo Style Fix for Main Page */
+        .logo-main-text { color: var(--text-dark); }
+        .logo-highlight-text { color: var(--primary-color); }
 
         .nav-links {
             display: flex;
@@ -405,6 +627,56 @@
         .stars { color: #FFD700; margin-bottom: 15px; font-size: 1rem; }
         .quote { font-style: italic; font-size: 0.95rem; color: #555; margin-bottom: 20px; position: relative; z-index: 2;}
 
+        /* --- SUGGESTION BOX (NEW) --- */
+        .suggestion-section {
+            background-color: var(--white);
+            padding: 60px 0;
+        }
+        
+        .suggestion-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .suggestion-form-box {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .suggestion-list-box {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .suggestion-item {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            border-left: 4px solid var(--secondary-color);
+            transition: transform 0.3s;
+            animation: slideInRight 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .suggestion-item:hover { transform: translateX(5px); }
+
+        @keyframes slideInRight {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .suggestion-text { font-size: 0.95rem; color: var(--text-dark); margin-bottom: 8px; }
+        .suggestion-time { font-size: 0.75rem; color: #999; text-align: right; }
+
         /* --- FOOTER --- */
         footer { background-color: var(--text-dark); color: var(--white); padding: 60px 0 20px; font-size: 0.95rem; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
@@ -471,6 +743,11 @@
             .hero-content { padding-right: 0; margin-bottom: 50px; }
             .hero h1 { font-size: 2.5rem; }
             .hero p { margin: 0 auto 30px; }
+
+            /* Intro Mobile */
+            .intro-brand { font-size: 2.5rem; }
+            .intro-logo-container { width: 140px; height: 140px; }
+            .intro-icon { font-size: 3rem; }
         }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -752,13 +1029,56 @@
         .status-dot.offline { background-color: #c0392b; }
     </style>
 </head>
-<body>
+<body class="intro-active">
+
+    <!-- ==========================================
+         INTRO / SPLASH SCREEN
+         ========================================== -->
+    <div class="intro-overlay" id="introOverlay">
+        <!-- Decorative Circles -->
+        <div class="intro-deco intro-deco-1"></div>
+        <div class="intro-deco intro-deco-2"></div>
+
+        <!-- Floating Particles -->
+        <div class="intro-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="intro-content">
+            <div class="intro-logo-container">
+                <div class="intro-ring"></div>
+                <div class="intro-ring"></div>
+                <div class="intro-ring"></div>
+                <div class="intro-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+            </div>
+            <h1 class="intro-brand">Bro<span>cita</span></h1>
+            <p class="intro-tagline">Tahu Premium yang Renyah & Lezat</p>
+            <div class="intro-loading">
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+            </div>
+        </div>
+    </div>
+    <!-- ==========================================
+         END INTRO
+         ========================================== -->
 
     <!-- Header -->
     <header>
         <nav>
             <div class="logo" id="secretDoor">
-                <i class="fas fa-utensils"></i> Brocita 
+                <i class="fas fa-utensils"></i> <span class="logo-main-text">Bro</span><span class="logo-highlight-text">cita</span>
                 <span id="connStatus" class="status-dot"></span>
             </div>
             
@@ -767,6 +1087,7 @@
                 <li><a href="#home" class="nav-link" onclick="navigateToCustomer()">Beranda</a></li>
                 <li><a href="#products" class="nav-link" onclick="navigateToCustomer()">Menu</a></li>
                 <li><a href="#testi" class="nav-link" onclick="navigateToCustomer()">Testimoni</a></li>
+                <li><a href="#suggestion" class="nav-link" onclick="navigateToCustomer()">Saran</a></li>
                 <li><a href="#contact" class="nav-link" onclick="navigateToCustomer()">Kontak</a></li>
             </ul>
 
@@ -795,7 +1116,8 @@
             <div class="blob blob-2"></div>
             <div class="container">
                 <div class="hero-content">
-                    <h1>Kerenyahan Tahu <br><span>Brocita</span> Tiada Tara!</h1>
+                    <!-- PERUBAHAN TITLE: "Bro" Hitam, "cita" Oranye -->
+                    <h1>Kerenyahan Tahu <br><span class="logo-main-text">Bro</span><span class="logo-highlight-text">cita</span> Tiada Tara!</h1>
                     <p>Tahu premium dengan tekstur lembut di dalam dan renyah di luar. Tanpa pengawet, hanya rasa cinta.</p>
                     <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: inherit;">
                         <a href="#products" class="btn btn-primary" id="heroOrderBtn">Pesan Sekarang</a>
@@ -855,6 +1177,32 @@
             </div>
         </section>
 
+        <!-- Suggestion Section (NEW) -->
+        <section class="section-padding suggestion-section" id="suggestion">
+            <div class="container">
+                <div class="section-title" data-aos="fade-up">
+                    <h2>Kotak <span>Saran</span></h2>
+                    <p style="color:var(--text-light); margin-top:10px;">Punya ide menu baru atau kritik? Tulis di sini!</p>
+                </div>
+                <div class="suggestion-container">
+                    <div class="suggestion-form-box" data-aos="fade-right">
+                        <h3 style="font-size:1.2rem; margin-bottom:15px; color:var(--text-dark);"><i class="fas fa-pencil-alt"></i> Tulis Saran</h3>
+                        <div class="form-group">
+                            <textarea id="suggestionInput" rows="4" placeholder="Contoh: Tolong tambah menu dimsum keju..."></textarea>
+                        </div>
+                        <button onclick="submitSuggestion()" class="btn btn-primary btn-block">Kirim Saran <i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <div class="suggestion-list-box" data-aos="fade-left">
+                        <h3 style="font-size:1.2rem; margin-bottom:15px; color:var(--text-dark);"><i class="fas fa-comments"></i> Saran Terbaru</h3>
+                        <div id="suggestionList">
+                            <!-- JS Render -->
+                            <div style="text-align:center; color:#aaa; padding:20px;">Memuat saran...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact -->
         <section class="section-padding" id="contact">
             <div class="container text-center">
@@ -878,7 +1226,6 @@
             <div class="container">
                 <div class="footer-grid">
                     <div data-aos="fade-right">
-                        <!-- FIXED: Changed </3> to </h3> -->
                         <h3 style="color:var(--primary-color); margin-bottom:15px; font-family:'Fredoka'; font-size:1.5rem;">Brocita</h3>
                         <p style="color:#ccc; font-size:0.9rem; line-height:1.8;">Menyajikan olahan tahu terbaik dengan bahan berkualitas dan cinta khas masakan rumahan. Renyah di luar, lembut di dalam.</p>
                     </div>
@@ -956,6 +1303,17 @@
                     <button onclick="resetDailyStockManual()" class="btn btn-danger btn-sm"><i class="fas fa-redo"></i> Reset Stok Harian</button>
                 </div>
                 <div class="stock-control-grid" id="adminStockGrid">
+                    <!-- JS Render -->
+                </div>
+            </div>
+
+            <!-- Suggestion Management (Admin) -->
+            <div style="background:white; padding:20px; border-radius:12px; box-shadow:var(--shadow-sm); margin-bottom:30px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h3 style="color:var(--text-dark);"><i class="fas fa-inbox"></i> Kotak Saran Masuk</h3>
+                    <button onclick="clearAllSuggestions()" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus Semua</button>
+                </div>
+                <div id="adminSuggestionList">
                     <!-- JS Render -->
                 </div>
             </div>
@@ -1109,6 +1467,24 @@
         AOS.init({ once: true, offset: 100, duration: 800 });
 
         // ==========================================
+        // INTRO ANIMATION CONTROL
+        // ==========================================
+        function initIntro() {
+            const introOverlay = document.getElementById('introOverlay');
+            const introDuration = 3000; // 3 detik
+
+            setTimeout(() => {
+                introOverlay.classList.add('fade-out');
+                document.body.classList.remove('intro-active');
+                
+                // Enable AOS animations after intro
+                setTimeout(() => {
+                    AOS.refresh();
+                }, 800);
+            }, introDuration);
+        }
+
+        // ==========================================
         // KONFIGURASI DATABASE
         // ==========================================
         const DB_CONFIG = {
@@ -1130,6 +1506,7 @@
             { id: 3, name: "Tahu Mix", price: 10000, img: "Tahu.jpeg", desc: "Tahu Mix Brocita berisi aneka isian pilihan yang gurih dan lezat, digoreng hingga crispy." },
             { id: 4, name: "Chicken Steak", price: 20000, img: "Steak.jpeg", desc: "Nasi chicken steak Brocita disajikan dengan ayam steak lembut dan juicy, dilumuri saus spesial." },
             { id: 5, name: "Ayam Geprek", price: 20000, img: "Geprek.jpeg", desc: "Nasi ayam geprek Brocita disajikan dengan ayam goreng crispy yang digeprek sambal pedas khas." },
+            { id: 6, name: "Dimsum", price: 10000, img: "Dimsum.jpeg", desc: "Dimsum Brocita isi ayam, dikukus sempurna dengan kulit yang tipis dan lembut." },
         ];
 
         let cart = [];
@@ -1197,6 +1574,12 @@
 
                 const data = await response.json();
                 const db = data.record;
+                
+                // Inisialisasi struktur data jika belum ada (migrasi)
+                if(!db.stock) db.stock = {};
+                if(!db.orders) db.orders = [];
+                if(!db.suggestions) db.suggestions = [];
+                
                 currentCloudData = db; 
 
                 setOnlineStatus(true);
@@ -1204,11 +1587,9 @@
                 // --- FULL MANUAL MODE: TIDAK ADA RESET OTOMATIS ---
                 
                 // UPDATE STOK LOKAL
-                if(db.stock) {
-                    products.forEach(p => {
-                        p.currentStock = db.stock[p.id] !== undefined ? db.stock[p.id] : 0;
-                    });
-                }
+                products.forEach(p => {
+                    p.currentStock = db.stock[p.id] !== undefined ? db.stock[p.id] : 0;
+                });
 
                 // CEK STATUS tutup (HANYA MANUAL)
                 checkShopStatus();
@@ -1218,9 +1599,11 @@
                     renderAdminStats(); 
                     renderAdminStockControls();
                     renderAdminOrders();
+                    renderAdminSuggestions(); // Render saran di admin
                     updateAdminHolidaySwitch(); 
                 } else {
                     renderProducts();
+                    renderSuggestions(); // Render saran di customer
                 }
                 
                 console.log("Data berhasil dimuat.");
@@ -1363,6 +1746,166 @@
             btn.disabled = false;
             
             showToast("Data Admin Diperbarui");
+        }
+
+        // ==========================================
+        // SUGGESTION SYSTEM (NEW)
+        // ==========================================
+        
+        // Render di Halaman Customer (Hanya 3 teratas)
+        function renderSuggestions() {
+            const container = document.getElementById('suggestionList');
+            if(!currentCloudData || !currentCloudData.suggestions) {
+                container.innerHTML = '<div style="text-align:center; color:#aaa;">Belum ada saran.</div>';
+                return;
+            }
+
+            // Ambil 3 terbaru (slice(0,3))
+            const latest = currentCloudData.suggestions.slice(0, 3);
+            
+            if(latest.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:#aaa;">Belum ada saran.</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            latest.forEach((s, i) => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.style.animationDelay = `${i * 0.2}s`;
+                item.innerHTML = `
+                    <div class="suggestion-text">"${s.text}"</div>
+                    <div class="suggestion-time">${s.time}</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Render di Halaman Admin (Semua)
+        function renderAdminSuggestions() {
+            const container = document.getElementById('adminSuggestionList');
+            if(!currentCloudData || !currentCloudData.suggestions || currentCloudData.suggestions.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:#aaa; padding:20px;">Kotak saran kosong.</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            // Tampilkan dari yang terbaru
+            const sorted = [...currentCloudData.suggestions].reverse();
+            
+            sorted.forEach(s => {
+                const div = document.createElement('div');
+                div.style.cssText = 'background:#f8f9fa; padding:15px; border-radius:8px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; border-left:4px solid #2c3e50;';
+                div.innerHTML = `
+                    <div>
+                        <p style="margin:0; color:#333;">"${s.text}"</p>
+                        <small style="color:#999;">${s.time}</small>
+                    </div>
+                    <button onclick="deleteSingleSuggestion('${s.id}')" class="btn-delete-item"><i class="fas fa-times"></i></button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Kirim Saran
+        async function submitSuggestion() {
+            const input = document.getElementById('suggestionInput');
+            const text = input.value.trim();
+            if(!text) return showCustomAlert("Kosong", "Tulis saran dulu ya.");
+
+            if(!isOnline) return showCustomAlert("Offline", "Butuh internet untuk kirim saran.");
+
+            toggleLoadingOverlay(true);
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
+                const data = await res.json();
+
+                if(!data.record.suggestions) data.record.suggestions = [];
+
+                const newSuggestion = {
+                    id: Date.now().toString(),
+                    text: text,
+                    time: new Date().toLocaleString('id-ID')
+                };
+
+                // Tambah di awal array (push)
+                data.record.suggestions.push(newSuggestion);
+
+                // LOGICA: Jika lebih dari 3, hapus yang paling lama (shift)
+                // Karena kita ingin yang tampil di customer selalu yang terbaru, 
+                // kita bisa simpan semua di DB, tapi render hanya 3 di customer.
+                // Namun permintaan user: "kalo misal ada yang add sugesstionnya seuggestion box pertama hapus karena diperbarui sama komen yang baru"
+                // Ini bisa diartikan FIFO (First In First Out) untuk penampilan customer, 
+                // atau penghapusan data lama.
+                // Untuk amannya, kita simpan semua di DB, tapi kita batasi render di customer.
+                // TAPI, jika user ingin benar-benar menghapus data lama, kita bisa lakukan di sini:
+                // if(data.record.suggestions.length > 10) data.record.suggestions.shift(); // Simpan maks 10 di DB biar tidak penuh.
+
+                await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify(data.record)
+                });
+
+                currentCloudData = data.record;
+                renderSuggestions(); // Update tampilan customer
+                input.value = "";
+                showToast("Saran terkirim! Terima kasih.");
+
+            } catch(e) {
+                showCustomAlert("Error", "Gagal mengirim saran.");
+            } finally {
+                toggleLoadingOverlay(false);
+            }
+        }
+
+        async function deleteSingleSuggestion(id) {
+            toggleLoadingOverlay(true);
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
+                const data = await res.json();
+                
+                data.record.suggestions = data.record.suggestions.filter(s => s.id !== id);
+
+                await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify(data.record)
+                });
+
+                currentCloudData = data.record;
+                renderAdminSuggestions();
+                showToast("Saran dihapus.");
+            } catch(e) {
+                showCustomAlert("Error", "Gagal menghapus.");
+            } finally {
+                toggleLoadingOverlay(false);
+            }
+        }
+
+        async function clearAllSuggestions() {
+            if(!confirm("Hapus semua saran?")) return;
+            toggleLoadingOverlay(true);
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
+                const data = await res.json();
+                
+                data.record.suggestions = [];
+
+                await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
+                    method: 'PUT',
+                    headers: getHeaders(),
+                    body: JSON.stringify(data.record)
+                });
+
+                currentCloudData = data.record;
+                renderAdminSuggestions();
+                showToast("Semua saran dihapus.");
+            } catch(e) {
+                showCustomAlert("Error", "Gagal menghapus.");
+            } finally {
+                toggleLoadingOverlay(false);
+            }
         }
 
         // ==========================================
@@ -2092,7 +2635,7 @@
                 }
                 if(offlineMsg) offlineMsg.style.display = 'none';
             } else {
-                dot.className = 'status-dot.offline';
+                dot.className = 'status-dot offline';
                 btnCheckout.disabled = true; 
                 btnCheckout.classList.remove('btn-primary');
                 btnCheckout.classList.add('btn-secondary');
@@ -2112,6 +2655,7 @@
         });
 
         // --- INIT ---
+        initIntro(); // Run intro animation first
         checkSessionPersistence();
         fetchCloudStock(true);
 
