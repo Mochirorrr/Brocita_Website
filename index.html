@@ -627,55 +627,33 @@
         .stars { color: #FFD700; margin-bottom: 15px; font-size: 1rem; }
         .quote { font-style: italic; font-size: 0.95rem; color: #555; margin-bottom: 20px; position: relative; z-index: 2;}
 
-        /* --- SUGGESTION BOX (NEW) --- */
-        .suggestion-section {
-            background-color: var(--white);
-            padding: 60px 0;
-        }
-        
-        .suggestion-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            align-items: flex-start;
-        }
-
-        .suggestion-form-box {
-            flex: 1;
-            min-width: 300px;
-            background: #f8f9fa;
+        /* Testimonial Form */
+        .testimonial-form-container {
+            background: var(--white);
             padding: 30px;
             border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            border-top: 4px solid var(--primary-color);
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto 50px;
         }
-
-        .suggestion-list-box {
-            flex: 1;
-            min-width: 300px;
+        .rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 5px;
+            font-size: 1.5rem;
         }
-
-        .suggestion-item {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
-            border-left: 4px solid var(--secondary-color);
-            transition: transform 0.3s;
-            animation: slideInRight 0.5s ease forwards;
-            opacity: 0;
+        .rating-input input { display: none; }
+        .rating-input label {
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
         }
-        
-        .suggestion-item:hover { transform: translateX(5px); }
-
-        @keyframes slideInRight {
-            from { transform: translateX(-20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .rating-input label:hover,
+        .rating-input label:hover ~ label,
+        .rating-input input:checked ~ label {
+            color: #FFD700;
         }
-
-        .suggestion-text { font-size: 0.95rem; color: var(--text-dark); margin-bottom: 8px; }
-        .suggestion-time { font-size: 0.75rem; color: #999; text-align: right; }
 
         /* --- FOOTER --- */
         footer { background-color: var(--text-dark); color: var(--white); padding: 60px 0 20px; font-size: 0.95rem; }
@@ -1087,7 +1065,6 @@
                 <li><a href="#home" class="nav-link" onclick="navigateToCustomer()">Beranda</a></li>
                 <li><a href="#products" class="nav-link" onclick="navigateToCustomer()">Menu</a></li>
                 <li><a href="#testi" class="nav-link" onclick="navigateToCustomer()">Testimoni</a></li>
-                <li><a href="#suggestion" class="nav-link" onclick="navigateToCustomer()">Saran</a></li>
                 <li><a href="#contact" class="nav-link" onclick="navigateToCustomer()">Kontak</a></li>
             </ul>
 
@@ -1116,7 +1093,7 @@
             <div class="blob blob-2"></div>
             <div class="container">
                 <div class="hero-content">
-                    <!-- PERUBAHAN TITLE: "Bro" Hitam, "cita" Oranye -->
+                    <!-- PERBAIKAN TITLE: Spasi dihilangkan -->
                     <h1>Kerenyahan Tahu <br><span class="logo-main-text">Bro</span><span class="logo-highlight-text">cita</span> Tiada Tara!</h1>
                     <p>Tahu premium dengan tekstur lembut di dalam dan renyah di luar. Tanpa pengawet, hanya rasa cinta.</p>
                     <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: inherit;">
@@ -1157,48 +1134,33 @@
                 <div class="section-title" data-aos="fade-up">
                     <h2>Kata <span>Pelanggan</span></h2>
                 </div>
-                <div class="testimonial-grid">
-                    <div class="testimonial-card" data-aos="flip-left" data-aos-delay="0">
-                        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <p class="quote">"Bagi saya brocita memiliki banyak beragam makanan dan harganya juga terjangkau"</p>
-                        <small style="font-weight:600; color:var(--primary-color)">- Fritzie</small>
-                    </div>
-                    <div class="testimonial-card" data-aos="flip-left" data-aos-delay="100">
-                        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <p class="quote">"brocita(brownies cireng tahu) menurut aku makanan yang ada di brocita ini enak² semua"</p>
-                        <small style="font-weight:600; color:var(--primary-color)">- Marcello</small>
-                    </div>
-                    <div class="testimonial-card" data-aos="flip-left" data-aos-delay="200">
-                        <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
-                        <p class="quote">"Bagi saya sudah cukup enak dan harga terjangkau, recommended!"</p>
-                        <small style="font-weight:600; color:var(--primary-color)">- Kemas</small>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Suggestion Section (NEW) -->
-        <section class="section-padding suggestion-section" id="suggestion">
-            <div class="container">
-                <div class="section-title" data-aos="fade-up">
-                    <h2>Kotak <span>Saran</span></h2>
-                    <p style="color:var(--text-light); margin-top:10px;">Punya ide menu baru atau kritik? Tulis di sini!</p>
+                <!-- Form Testimoni Baru -->
+                <div class="testimonial-form-container" data-aos="fade-up">
+                    <h3 style="text-align:center; margin-bottom:20px; color:var(--text-dark);"><i class="fas fa-pen"></i> Bagikan Pengalamanmu</h3>
+                    <div class="form-group">
+                        <label>Nama Kamu</label>
+                        <input type="text" id="testiName" placeholder="Nama samaran atau asli">
+                    </div>
+                    <div class="form-group">
+                        <label>Pesan / Testimoni</label>
+                        <textarea id="testiMessage" rows="3" placeholder="Enak banget, renyah, pengiriman cepat..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating Bintang</label>
+                        <div class="rating-input">
+                            <input type="radio" name="rating" id="star5" value="5"><label for="star5" class="fas fa-star"></label>
+                            <input type="radio" name="rating" id="star4" value="4"><label for="star4" class="fas fa-star"></label>
+                            <input type="radio" name="rating" id="star3" value="3"><label for="star3" class="fas fa-star"></label>
+                            <input type="radio" name="rating" id="star2" value="2"><label for="star2" class="fas fa-star"></label>
+                            <input type="radio" name="rating" id="star1" value="1"><label for="star1" class="fas fa-star"></label>
+                        </div>
+                    </div>
+                    <button onclick="submitTestimonial()" class="btn btn-primary btn-block">Kirim Testimoni <i class="fas fa-paper-plane"></i></button>
                 </div>
-                <div class="suggestion-container">
-                    <div class="suggestion-form-box" data-aos="fade-right">
-                        <h3 style="font-size:1.2rem; margin-bottom:15px; color:var(--text-dark);"><i class="fas fa-pencil-alt"></i> Tulis Saran</h3>
-                        <div class="form-group">
-                            <textarea id="suggestionInput" rows="4" placeholder="Contoh: Tolong tambah menu dimsum keju..."></textarea>
-                        </div>
-                        <button onclick="submitSuggestion()" class="btn btn-primary btn-block">Kirim Saran <i class="fas fa-paper-plane"></i></button>
-                    </div>
-                    <div class="suggestion-list-box" data-aos="fade-left">
-                        <h3 style="font-size:1.2rem; margin-bottom:15px; color:var(--text-dark);"><i class="fas fa-comments"></i> Saran Terbaru</h3>
-                        <div id="suggestionList">
-                            <!-- JS Render -->
-                            <div style="text-align:center; color:#aaa; padding:20px;">Memuat saran...</div>
-                        </div>
-                    </div>
+
+                <div class="testimonial-grid" id="testimonialGrid">
+                    <!-- JS Render Here -->
                 </div>
             </div>
         </section>
@@ -1307,13 +1269,13 @@
                 </div>
             </div>
 
-            <!-- Suggestion Management (Admin) -->
+            <!-- Testimonial Management (Admin) -->
             <div style="background:white; padding:20px; border-radius:12px; box-shadow:var(--shadow-sm); margin-bottom:30px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <h3 style="color:var(--text-dark);"><i class="fas fa-inbox"></i> Kotak Saran Masuk</h3>
-                    <button onclick="clearAllSuggestions()" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus Semua</button>
+                    <h3 style="color:var(--text-dark);"><i class="fas fa-comments"></i> Kelola Testimoni Pelanggan</h3>
+                    <button onclick="clearAllTestimonials()" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus Semua</button>
                 </div>
-                <div id="adminSuggestionList">
+                <div id="adminTestimonialList">
                     <!-- JS Render -->
                 </div>
             </div>
@@ -1578,7 +1540,7 @@
                 // Inisialisasi struktur data jika belum ada (migrasi)
                 if(!db.stock) db.stock = {};
                 if(!db.orders) db.orders = [];
-                if(!db.suggestions) db.suggestions = [];
+                if(!db.testimonials) db.testimonials = []; // Penambahan untuk testimoni
                 
                 currentCloudData = db; 
 
@@ -1599,11 +1561,11 @@
                     renderAdminStats(); 
                     renderAdminStockControls();
                     renderAdminOrders();
-                    renderAdminSuggestions(); // Render saran di admin
+                    renderAdminTestimonials(); // Render testimoni di admin
                     updateAdminHolidaySwitch(); 
                 } else {
                     renderProducts();
-                    renderSuggestions(); // Render saran di customer
+                    renderTestimonials(); // Render testimoni di customer
                 }
                 
                 console.log("Data berhasil dimuat.");
@@ -1749,97 +1711,116 @@
         }
 
         // ==========================================
-        // SUGGESTION SYSTEM (NEW)
+        // TESTIMONIAL SYSTEM (UPDATED)
         // ==========================================
         
-        // Render di Halaman Customer (Hanya 3 teratas)
-        function renderSuggestions() {
-            const container = document.getElementById('suggestionList');
-            if(!currentCloudData || !currentCloudData.suggestions) {
-                container.innerHTML = '<div style="text-align:center; color:#aaa;">Belum ada saran.</div>';
+        // Render di Halaman Customer
+        function renderTestimonials() {
+            const container = document.getElementById('testimonialGrid');
+            if(!currentCloudData || !currentCloudData.testimonials) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align:center;">Belum ada testimoni.</div>';
                 return;
             }
 
-            // Ambil 3 terbaru (slice(0,3))
-            const latest = currentCloudData.suggestions.slice(0, 3);
+            // Tampilkan semua testimoni, atau batasi jika perlu
+            // User request: "kalo misal add satu untuk box pertama hilang saja dari database"
+            // Logika FIFO sudah dilakukan di saat submit. Di sini kita render apa adanya (max 3 di database).
             
-            if(latest.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#aaa;">Belum ada saran.</div>';
-                return;
-            }
-
-            container.innerHTML = '';
-            latest.forEach((s, i) => {
-                const item = document.createElement('div');
-                item.className = 'suggestion-item';
-                item.style.animationDelay = `${i * 0.2}s`;
-                item.innerHTML = `
-                    <div class="suggestion-text">"${s.text}"</div>
-                    <div class="suggestion-time">${s.time}</div>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        // Render di Halaman Admin (Semua)
-        function renderAdminSuggestions() {
-            const container = document.getElementById('adminSuggestionList');
-            if(!currentCloudData || !currentCloudData.suggestions || currentCloudData.suggestions.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#aaa; padding:20px;">Kotak saran kosong.</div>';
+            if(currentCloudData.testimonials.length === 0) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#aaa;">Jadilah yang pertama memberi testimoni!</div>';
                 return;
             }
 
             container.innerHTML = '';
             // Tampilkan dari yang terbaru
-            const sorted = [...currentCloudData.suggestions].reverse();
-            
-            sorted.forEach(s => {
+            const sortedTesti = [...currentCloudData.testimonials].reverse();
+
+            sortedTesti.forEach((t, i) => {
+                const card = document.createElement('div');
+                card.className = 'testimonial-card';
+                card.setAttribute('data-aos', 'flip-left');
+                card.setAttribute('data-aos-delay', i * 100);
+
+                // Generate stars
+                let starsHtml = '';
+                for(let j=1; j<=5; j++) {
+                    if(j <= t.rating) starsHtml += '<i class="fas fa-star"></i>';
+                    else starsHtml += '<i class="far fa-star"></i>'; // Empty star
+                }
+
+                card.innerHTML = `
+                    <div class="stars">${starsHtml}</div>
+                    <p class="quote">"${t.message}"</p>
+                    <small style="font-weight:600; color:var(--primary-color)">- ${t.name}</small>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Render di Halaman Admin
+        function renderAdminTestimonials() {
+            const container = document.getElementById('adminTestimonialList');
+            if(!currentCloudData || !currentCloudData.testimonials || currentCloudData.testimonials.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:#aaa; padding:20px;">Belum ada testimoni.</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            currentCloudData.testimonials.forEach(t => {
                 const div = document.createElement('div');
-                div.style.cssText = 'background:#f8f9fa; padding:15px; border-radius:8px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; border-left:4px solid #2c3e50;';
+                div.style.cssText = 'background:#f8f9fa; padding:15px; border-radius:8px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; border-left:4px solid var(--primary-color);';
+                
+                // Generate stars for admin
+                let starsAdmin = '';
+                for(let j=1; j<=5; j++) {
+                    starsAdmin += (j <= t.rating) ? '★' : '☆';
+                }
+
                 div.innerHTML = `
                     <div>
-                        <p style="margin:0; color:#333;">"${s.text}"</p>
-                        <small style="color:#999;">${s.time}</small>
+                        <div style="color:${'var(--secondary-color)'};">${starsAdmin}</div>
+                        <p style="margin:5px 0 0; color:#333;">"${t.message}"</p>
+                        <small style="color:#999; font-weight:bold;">- ${t.name}</small>
                     </div>
-                    <button onclick="deleteSingleSuggestion('${s.id}')" class="btn-delete-item"><i class="fas fa-times"></i></button>
+                    <button onclick="deleteSingleTestimonial('${t.id}')" class="btn-delete-item"><i class="fas fa-times"></i></button>
                 `;
                 container.appendChild(div);
             });
         }
 
-        // Kirim Saran
-        async function submitSuggestion() {
-            const input = document.getElementById('suggestionInput');
-            const text = input.value.trim();
-            if(!text) return showCustomAlert("Kosong", "Tulis saran dulu ya.");
+        // Kirim Testimoni
+        async function submitTestimonial() {
+            const name = document.getElementById('testiName').value.trim();
+            const message = document.getElementById('testiMessage').value.trim();
+            const ratingInput = document.querySelector('input[name="rating"]:checked');
+            
+            if(!name || !message || !ratingInput) {
+                return showCustomAlert("Lengkapi Data", "Isi nama, pesan, dan rating bintang.");
+            }
 
-            if(!isOnline) return showCustomAlert("Offline", "Butuh internet untuk kirim saran.");
+            if(!isOnline) return showCustomAlert("Offline", "Butuh internet untuk kirim testimoni.");
 
             toggleLoadingOverlay(true);
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
                 const data = await res.json();
 
-                if(!data.record.suggestions) data.record.suggestions = [];
+                if(!data.record.testimonials) data.record.testimonials = [];
 
-                const newSuggestion = {
+                const newTesti = {
                     id: Date.now().toString(),
-                    text: text,
-                    time: new Date().toLocaleString('id-ID')
+                    name: name,
+                    message: message,
+                    rating: parseInt(ratingInput.value)
                 };
 
-                // Tambah di awal array (push)
-                data.record.suggestions.push(newSuggestion);
+                // Tambah testimoni baru di akhir array
+                data.record.testimonials.push(newTesti);
 
-                // LOGICA: Jika lebih dari 3, hapus yang paling lama (shift)
-                // Karena kita ingin yang tampil di customer selalu yang terbaru, 
-                // kita bisa simpan semua di DB, tapi render hanya 3 di customer.
-                // Namun permintaan user: "kalo misal ada yang add sugesstionnya seuggestion box pertama hapus karena diperbarui sama komen yang baru"
-                // Ini bisa diartikan FIFO (First In First Out) untuk penampilan customer, 
-                // atau penghapusan data lama.
-                // Untuk amannya, kita simpan semua di DB, tapi kita batasi render di customer.
-                // TAPI, jika user ingin benar-benar menghapus data lama, kita bisa lakukan di sini:
-                // if(data.record.suggestions.length > 10) data.record.suggestions.shift(); // Simpan maks 10 di DB biar tidak penuh.
+                // LOGIKA FIFO: Jika lebih dari 3, hapus yang paling lama (index 0)
+                if(data.record.testimonials.length > 3) {
+                    data.record.testimonials.shift(); 
+                }
 
                 await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
@@ -1848,24 +1829,29 @@
                 });
 
                 currentCloudData = data.record;
-                renderSuggestions(); // Update tampilan customer
-                input.value = "";
-                showToast("Saran terkirim! Terima kasih.");
+                renderTestimonials(); // Update tampilan customer
+                
+                // Reset form
+                document.getElementById('testiName').value = '';
+                document.getElementById('testiMessage').value = '';
+                if(ratingInput) ratingInput.checked = false;
+
+                showToast("Terima kasih atas testimoni Anda!");
 
             } catch(e) {
-                showCustomAlert("Error", "Gagal mengirim saran.");
+                showCustomAlert("Error", "Gagal mengirim testimoni.");
             } finally {
                 toggleLoadingOverlay(false);
             }
         }
 
-        async function deleteSingleSuggestion(id) {
+        async function deleteSingleTestimonial(id) {
             toggleLoadingOverlay(true);
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
                 const data = await res.json();
                 
-                data.record.suggestions = data.record.suggestions.filter(s => s.id !== id);
+                data.record.testimonials = data.record.testimonials.filter(t => t.id !== id);
 
                 await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
@@ -1874,8 +1860,9 @@
                 });
 
                 currentCloudData = data.record;
-                renderAdminSuggestions();
-                showToast("Saran dihapus.");
+                renderAdminTestimonials();
+                renderTestimonials();
+                showToast("Testimoni dihapus.");
             } catch(e) {
                 showCustomAlert("Error", "Gagal menghapus.");
             } finally {
@@ -1883,14 +1870,14 @@
             }
         }
 
-        async function clearAllSuggestions() {
-            if(!confirm("Hapus semua saran?")) return;
+        async function clearAllTestimonials() {
+            if(!confirm("Hapus semua testimoni?")) return;
             toggleLoadingOverlay(true);
             try {
                 const res = await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}/latest`, { headers: getHeaders() });
                 const data = await res.json();
                 
-                data.record.suggestions = [];
+                data.record.testimonials = [];
 
                 await fetch(`https://api.jsonbin.io/v3/b/${DB_CONFIG.binId}`, {
                     method: 'PUT',
@@ -1899,8 +1886,9 @@
                 });
 
                 currentCloudData = data.record;
-                renderAdminSuggestions();
-                showToast("Semua saran dihapus.");
+                renderAdminTestimonials();
+                renderTestimonials();
+                showToast("Semua testimoni dihapus.");
             } catch(e) {
                 showCustomAlert("Error", "Gagal menghapus.");
             } finally {
